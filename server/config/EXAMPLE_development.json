@@ -1,0 +1,11 @@
+{
+    "dbUrl":"",
+    "sessionSecret":"",
+    "fb":{
+        "appID":"",
+        "appSecret": "",
+        "callbackUrl": ""
+    },
+    "host":""
+}
+
