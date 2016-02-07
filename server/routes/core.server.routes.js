@@ -1,8 +1,8 @@
-module.exports = function(express, app, config, path){
+module.exports = function(express, app, config){
     var router = express.Router();
 
-    app.get('/', function(req, res) {
-        res.sendFile('index.html', { root: path.join(__dirname, '../../public') });
+    router.get('/',function(req, res, next){
+        res.render("index", {});
     });
     
     app.use('/', router);

@@ -12,7 +12,12 @@ var app         = express();
 
 app.set('port', process.env.PORT || 3000);
 app.set('host', config.host);
-app.use(express.static(path.join(__dirname, '../public')));
+
+app.set('views', path.join(__dirname, 'views'));
+
+app.engine('html', require("hogan-express"));
+app.set('view engine', 'html');
+app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
@@ -22,7 +27,7 @@ app.use(bodyParser.urlencoded({ extended: false }));
 var server = require('http').createServer(app);
 
 //import routes
-require('./routes/core.server.routes.js')(express, app, config, path);
+require('./routes/core.server.routes.js')(express, app, config);
 
 // compress all requests 
 app.use(compress())
