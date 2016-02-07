@@ -11,13 +11,12 @@ var app         = express();
 
 
 app.set('port', process.env.PORT || 3000);
-app.set('host', config.host);
 
 app.set('views', path.join(__dirname, 'views'));
 
 app.engine('html', require("hogan-express"));
 app.set('view engine', 'html');
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
 app.use(logger('dev'));
 app.use(bodyParser.json());
