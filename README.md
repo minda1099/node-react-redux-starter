@@ -24,7 +24,8 @@ to quickly build a React Redux web app.
 *  Csslint
 
 ### TO-DO List REACT
-*  Add: https://github.com/nfl/react-helmet
+*  React Helmet: https://github.com/nfl/react-helmet
+
 
 ### NPM Scripts
 

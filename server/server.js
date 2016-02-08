@@ -36,7 +36,7 @@ db.on('disconnected', connect);
 
 
 //IMPORT EXPRESS CONFIGERATION
-require('./config/express.config')(express, app, mongoose);
+require('./config/express.config')(express, app, mongoose, config);
 
 
 //IMPORT ROUTES
