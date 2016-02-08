@@ -1,40 +1,54 @@
-// Dependencies
+'use strict';
+// DEPENDENCIES
 var express      = require('express');
 var errorHandler = require('errorhandler');
 var mongoose     = require('mongoose');
 
-//Create Express server
+
+//CREATE EXPRESS SERVER
 var app          = express();
 
-//Import ENV config variables
+
+//IMPORT ENV CONFIG SETTINGS
 var config       = require('./config/env.config');
 
 
-//Connect to database
-mongoose.connect(config.db);
+//CONNNECT TO MongoDB
+
+var connect = function() {
+    mongoose.connect(config.db, function(err, res) {
+        if(err) {
+            console.log('** Error connecting to: ' + config.db + '. ' + err);
+        }else {
+            console.log('** MongoDB Connection Established');
+            console.log('** DB: ' + config.db);
+
+        }
+    });
+};
+connect();
 var db = mongoose.connection;
-db.on('error', function() {
-  console.log('MongoDB Connection Error. Please make sure that MongoDB is running and that you have the correct db set in config');
+db.on('error',function() {
   process.exit(1);
 });
-db.once('open', function() {
-  console.log('**MongoDB Connection Established**');
-});
+db.on('disconnected', connect);
 
 
 
-//Express Configuration
+//IMPORT EXPRESS CONFIGERATION
 require('./config/express.config')(express, app, mongoose);
 
-//server
-var server = require('http').createServer(app);
 
-//import routes
+//IMPORT ROUTES
 require('./routes/core.server.routes.js')(express, app, config);
 
 
-app.use(errorHandler());//error handling
+app.use(errorHandler());//Error handling
 
-server.listen(app.get('port'), function(){
-    console.log('**Running as on port: ' + app.get('port') + '**');
+//RUN EXPRESS SERVER
+app.listen(app.get('port'), function(){
+    console.log('** Server Running 😊');
+    console.log('** PORT: ' + app.get('port'));
+    console.log('** ENV: ' + process.env.NODE_ENV);
+
 });

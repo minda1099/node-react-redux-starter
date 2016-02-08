@@ -1,16 +1,20 @@
 'use strict';
-// Dependencies
-var logger       = require('morgan');
-var bodyParser   = require('body-parser');
-var path         = require('path');
-var cookieParser = require("cookie-parser");
-var session      = require('express-session');
-var ConnectMongo = require("connect-mongo")(session);
-var sass         = require('node-sass-middleware');
-var compress     = require('compression');
+// DEPENDENCIES
+var logger          = require('morgan');
+var bodyParser      = require('body-parser');
+var path            = require('path');
+var cookieParser    = require("cookie-parser");
+var session         = require('express-session');
+var ConnectMongo    = require("connect-mongo")(session);
+var sass            = require('node-sass-middleware');
+var compress        = require('compression');
+var methodOverride  = require('method-override');
+var flash           = require('express-flash');
 
 
-module.exports = function(express, app){
+module.exports      = function(express, app){
+    
+    app.disable('x-powered-by'); //basic security
     app.set('port', process.env.PORT || 8080);//Set port
     app.set('views', path.join(__dirname, '../views'));//Set views directory
     app.engine('html', require("hogan-express"));//Set template engine
@@ -29,6 +33,7 @@ module.exports = function(express, app){
     
     app.use(bodyParser.json());
     app.use(bodyParser.urlencoded({ extended: false }));
+    app.use(methodOverride());
     //SESSIONS
 
     app.use(cookieParser());
@@ -43,7 +48,9 @@ module.exports = function(express, app){
     // }));
     // app.use(passport.initialize());
     // app.use(passport.session());
-    // app.use(flash());
+    app.use(flash());
+
+    
     // app.use(lusca({
     //   csrf: true,
     //   xframe: 'SAMEORIGIN',
