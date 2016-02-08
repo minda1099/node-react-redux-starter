@@ -1,5 +1,5 @@
 {
-    "dbUrl":"",
+    "db":"",
     "sessionSecret":"",
     "fb":{
         "appID":"",

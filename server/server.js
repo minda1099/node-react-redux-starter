@@ -1,26 +1,30 @@
-// dependencies
-var express     = require('express');
-var path        = require('path');
-var logger      = require('morgan');
-var bodyParser  = require('body-parser');
-var path        = require('path');
-var compress    = require('compression');
-var config      = require('./config/config');
+// Dependencies
+var express      = require('express');
+var errorHandler = require('errorhandler');
+var mongoose     = require('mongoose');
 
-var app         = express();
+//Create Express server
+var app          = express();
+
+//Import ENV config variables
+var config       = require('./config/env.config');
 
 
-app.set('port', process.env.PORT || 3000);
+//Connect to database
+mongoose.connect(config.db);
+var db = mongoose.connection;
+db.on('error', function() {
+  console.log('MongoDB Connection Error. Please make sure that MongoDB is running and that you have the correct db set in config');
+  process.exit(1);
+});
+db.once('open', function() {
+  console.log('**MongoDB Connection Established**');
+});
 
-app.set('views', path.join(__dirname, 'views'));
 
-app.engine('html', require("hogan-express"));
-app.set('view engine', 'html');
-app.use(express.static(path.join(__dirname, '../public')));
 
-app.use(logger('dev'));
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({ extended: false }));
+//Express Configuration
+require('./config/express.config')(express, app, mongoose);
 
 //server
 var server = require('http').createServer(app);
@@ -28,9 +32,9 @@ var server = require('http').createServer(app);
 //import routes
 require('./routes/core.server.routes.js')(express, app, config);
 
-// compress all requests 
-app.use(compress())
-//
+
+app.use(errorHandler());//error handling
+
 server.listen(app.get('port'), function(){
-    console.log("Running as on port: " + app.get('port'));
+    console.log('**Running as on port: ' + app.get('port') + '**');
 });
