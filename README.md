@@ -6,8 +6,8 @@ to quickly build a React Redux web app.
 
 
 ### TO-DO List
-*  Redux File Structure
-*  MongoDB setup
+*  ~~Redux File Structure~~
+*  ~~MongoDB setup~~
 *  Email Auth
 *  Facebook Auth
 *  Twitter Auth
@@ -18,10 +18,10 @@ to quickly build a React Redux web app.
 *  Setup for production and development modes
 *  Sass Support 
 *  Css + Js Minifcation
-*  Jade Templating
 *  Basic security
 *  Jslint
 *  Csslint
+*  Add: https://github.com/nfl/react-helmet
 
 ### NPM Scripts
 
