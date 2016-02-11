@@ -12,7 +12,6 @@ var app          = express();
 //IMPORT ENV CONFIG SETTINGS
 var config       = require('./config/env.config');
 
-
 //CONNNECT TO MongoDB
 
 var connect = function() {
@@ -32,7 +31,6 @@ db.on('error',function() {
   process.exit(1);
 });
 db.on('disconnected', connect);
-
 
 
 //IMPORT EXPRESS CONFIGERATION

@@ -62,4 +62,4 @@ module.exports      = function(express, app, mongoose, config){
     //   xssProtection: true
     // }));
 
-}
+};
