@@ -9,8 +9,8 @@ var mongoose     = require('mongoose');
 var app          = express();
 
 
-//IMPORT ENV CONFIG SETTINGS
-var config       = require('./config/env.config');
+//IMPORT SECRET ENV CONFIG SETTINGS
+var config       = require('./config/secret.config');
 
 //CONNNECT TO MongoDB
 
