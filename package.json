@@ -5,11 +5,11 @@
   "main": "server.js",
   "scripts": {
     "start": "NODE_ENV=production node server/server.js",
-    "dev": "NODE_ENV=development node server/server.js",
+    "dev": "NODE_ENV=development nodemon server/server.js",
     "build:webpack": "webpack --progress --colors",
     "build:webpack:dev": "webpack --watch --progress --colors",
     "build": "rm -rf node_modules && npm install && npm run build:webpack",
-    "build:dev": "npm install && npm run build:webpack:dev"
+    "build:dev": "npm install && npm install -g nodemon && npm run build:webpack:dev"
   },
   "babel": {
     "presets": [
