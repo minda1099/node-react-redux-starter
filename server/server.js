@@ -33,15 +33,20 @@ db.on('error',function() {
 db.on('disconnected', connect);
 
 
-//IMPORT EXPRESS CONFIGERATION
+//IMPORT EXPRESS CONFIGURATION
 require('./config/express.config')(express, app, mongoose, config);
+
+
+//IMPORT MODELS
+require('./models/users.server.models.js');
 
 
 //IMPORT ROUTES
 require('./routes/core.server.routes.js')(express, app, config);
+require('./routes/users.server.routes.js')(express, app, config);
 
 
-app.use(errorHandler());//Error handling
+app.use(errorHandler());//ERROR HANDLING
 
 //RUN EXPRESS SERVER
 app.listen(app.get('port'), function(){

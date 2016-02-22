@@ -1,16 +1,13 @@
 'use strict';
 // DEPENDENCIES
-var logger          = require('morgan');
-var bodyParser      = require('body-parser');
+var logger          = require('morgan'); 
+var bodyParser      = require('body-parser'); 
 var path            = require('path');
-var cookieParser    = require('cookie-parser');
-var session         = require('express-session');
 var passport        = require('passport');
-var MongoStore      = require('connect-mongo')(session);
-var sass            = require('node-sass-middleware');
+//var sass            = require('node-sass-middleware');
 var compress        = require('compression');
 var methodOverride  = require('method-override');
-var flash           = require('express-flash');
+//var flash           = require('express-flash');
 
 
 module.exports      = function(express, app, mongoose, config){
@@ -36,30 +33,6 @@ module.exports      = function(express, app, mongoose, config){
     app.use(bodyParser.urlencoded({ extended: false }));
     app.use(methodOverride());
     
-    //SESSIONS
-    app.use(cookieParser());
-    var sessOptions = {
-        resave: true,
-        saveUninitialized: true,
-        secret: config.sessionSecret,
-        name: 'sessionId',
-        store: new MongoStore(
-          { 
-            url: config.db,
-            autoReconnect: true
-          }
-        )
-    };
-    app.use(session(sessOptions));
-    app.use(passport.initialize());
-    app.use(passport.session());
-    app.use(flash());
-
-    
-    // app.use(lusca({
-    //   csrf: true,
-    //   xframe: 'SAMEORIGIN',
-    //   xssProtection: true
-    // }));
+   
 
 };
