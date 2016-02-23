@@ -1,17 +1,20 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { createStore, applyMiddleware } from 'redux';
-import ReduxPromise from 'redux-promise';
-import { Router, browserHistory } from 'react-router';
+import Root from './containers/root';
+import configureStore from './store/configure-store';
+import {loginUserSuccess} from './actions';
 
-import reducers from './reducers/reducers';
-import routes from './routes';
+const domMount = document.getElementById('mount');
+const store = configureStore(window.__INITIAL_STATE__);
 
-const createStoreWithMiddleware = applyMiddleware(ReduxPromise)(createStore);
 
-ReactDOM.render(
-  <Provider store={createStoreWithMiddleware(reducers)}>
-    <Router history={browserHistory} routes={routes} />
-  </Provider>
-  , document.querySelector('#mount'));
+const rootComponent = (
+    <Root store={store} />
+);
+
+let token = localStorage.getItem('token');
+if (token !== null) {
+    store.dispatch(loginUserSuccess(token));
+}
+
+ReactDOM.render(rootComponent, domMount);

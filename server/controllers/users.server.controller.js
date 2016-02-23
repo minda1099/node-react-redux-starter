@@ -7,6 +7,7 @@ var jwt         = require('jsonwebtoken'); // used to create, sign, and verify t
 var secret      = require('../config/secret.config').secret;
 
 exports.register = function(req, res, next) {
+    
     if(!req.body.email || !req.body.password){
         res.status(400).json({
               success: 'false',

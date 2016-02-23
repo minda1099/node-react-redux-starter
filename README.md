@@ -3,18 +3,16 @@
 This is currently work in progress.  End goal is to create a starter pack with all the tooling
 to quickly build a React Redux web app.
 
-
-
 ### TO-DO List NODE
 *  ~~Redux File Structure~~
 *  ~~MongoDB setup~~
-*  User models
-*  Email Auth
+*  ~~User models~~
+*  ~~Email Auth~~
 *  Facebook Auth
 *  Twitter Auth
 *  Password Reset Email
-*  Password Email Change
-*  Sessions + Cookies
+*  ~~Password Email Change~~
+*  ~~Sessions + Cookies~~ #wontdo
 *  Mandrill Intergration
 *  ~~Setup for production and development modes~~
 *  Sass Support 
@@ -23,9 +21,10 @@ to quickly build a React Redux web app.
 *  Jslint
 *  Csslint
 
-### TO-DO List REACT
+### TO-DO List REACT + Redux
 *  React Helmet: https://github.com/nfl/react-helmet
-
+*   ~~Auth w/ email & JWT, Login, Logout, Register ~~
+*  Auth w/ facebook, google, twitter & JWT
 
 ### NPM Scripts
 

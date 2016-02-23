@@ -35,13 +35,17 @@
   },
   "homepage": "https://github.com/anthonyjgrove/node-simple-starter#readme",
   "dependencies": {
+    "axios": "^0.9.1",
     "babel-preset-stage-1": "^6.1.18",
+    "bcryptjs": "^2.3.0",
     "body-parser": "^1.14.2",
     "compression": "^1.6.1",
     "errorhandler": "^1.4.3",
     "express": "^4.13.4",
+    "history": "^2.0.0",
     "hogan-express": "^0.5.2",
     "jsonwebtoken": "^5.7.0",
+    "jwt-decode": "^1.5.1",
     "lodash": "^3.10.1",
     "method-override": "^2.3.5",
     "mongoose": "4.4.1",
@@ -52,8 +56,13 @@
     "react-dom": "^0.14.3",
     "react-redux": "^4.0.0",
     "react-router": "^2.0.0-rc5",
+    "react-router-redux": "^3.0.0",
     "redux": "^3.0.4",
-    "redux-promise": "^0.5.1"
+    "redux-form": "^4.2.0",
+    "redux-logger": "^2.5.2",
+    "redux-promise": "^0.5.1",
+    "redux-thunk": "^1.0.3",
+    "whatwg-fetch": "^0.11.0"
   },
   "devDependencies": {
     "babel-core": "^6.2.1",
