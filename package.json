@@ -61,8 +61,7 @@
     "redux-form": "^4.2.0",
     "redux-logger": "^2.5.2",
     "redux-promise": "^0.5.1",
-    "redux-thunk": "^1.0.3",
-    "whatwg-fetch": "^0.11.0"
+    "redux-thunk": "^1.0.3"
   },
   "devDependencies": {
     "babel-core": "^6.2.1",

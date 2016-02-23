@@ -23,7 +23,7 @@ to quickly build a React Redux web app.
 
 ### TO-DO List REACT + Redux
 *  React Helmet: https://github.com/nfl/react-helmet
-*   ~~Auth w/ email & JWT, Login, Logout, Register ~~
+*  ~~Auth w/ email & JWT, Login, Logout, Register~~
 *  Auth w/ facebook, google, twitter & JWT
 
 ### NPM Scripts

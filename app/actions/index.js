@@ -1,4 +1,4 @@
-import { LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, FETCH_PROTECTED_DATA_REQUEST, RECEIVE_PROTECTED_DATA } from '../constants';
+import { LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER} from '../constants';
 
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
@@ -106,43 +106,4 @@ export function loginUser(email, password) {
                 dispatch(loginUserFailure(error));
             });
     };
-}
-
-export function receiveProtectedData(data) {
-    return {
-        type: RECEIVE_PROTECTED_DATA,
-        payload: {
-            data: data
-        }
-    }
-}
-
-export function fetchProtectedDataRequest() {
-  return {
-    type: FETCH_PROTECTED_DATA_REQUEST
-  }
-}
-
-export function fetchProtectedData(token) {
-
-    return (dispatch, state) => {
-        dispatch(fetchProtectedDataRequest());
-        return fetch('http://localhost:3000/getData/', {
-                credentials: 'include',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
-            })
-            .then(checkHttpStatus)
-            .then(parseJSON)
-            .then(response => {
-                dispatch(receiveProtectedData(response.data));
-            })
-            .catch(error => {
-                if(error.response.status === 401) {
-                  dispatch(loginUserFailure(error));
-                  dispatch(pushState(null, '/login'));
-                }
-            });
-       };
 }
