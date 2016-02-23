@@ -1,7 +1,7 @@
 import React from 'react';
 import { Route, IndexRoute } from 'react-router';
 import  { Main, Register, Login, Settings } from '../containers';
-import Welcome from '../components';
+import { Welcome } from '../components';
 
 export default(
     <Route path='/' component={ Main } >

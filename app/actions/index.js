@@ -63,7 +63,7 @@ export function registerUser(email, password) {
                 try {
                     let decoded = jwtDecode(response.data.token);
                     dispatch(loginUserSuccess(response.data.token));
-                    dispatch(routeActions.push('/'));
+                    dispatch(routeActions.push('/settings'));
                 } catch (e) {
                     dispatch(loginUserFailure({
                         response: {
@@ -92,7 +92,7 @@ export function loginUser(email, password) {
                 try {
                     let decoded = jwtDecode(response.data.token);
                     dispatch(loginUserSuccess(response.data.token));
-                    dispatch(routeActions.push('/'));
+                    dispatch(routeActions.push('/settings'));
                 } catch (e) {
                     dispatch(loginUserFailure({
                         response: {

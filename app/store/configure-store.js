@@ -15,10 +15,10 @@ export default function configureStore(initialState) {
     const reduxRouterMiddleware = syncHistory(browserHistory);
 
     const middleware = applyMiddleware(
-        reduxRouterMiddleware,
-        reduxPromise, 
-        thunk, 
-        logger
+        reduxRouterMiddleware
+        ,reduxPromise 
+        ,thunk 
+        //,logger
     );
 
     createStoreWithMiddleware = compose(

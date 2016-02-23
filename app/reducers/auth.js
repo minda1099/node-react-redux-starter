@@ -34,7 +34,7 @@ export default function(state = INITIAL_STATE, action){
                 'isAuthenticated': false,
                 'token': null,
                 'email': null,
-                'statusText': `Authentication Error: ${action.payload.status} ${action.payload.statusText}`
+                'statusText': `${action.payload.statusText}`
             };
         case LOGOUT_USER:
             return {
@@ -42,7 +42,7 @@ export default function(state = INITIAL_STATE, action){
                 'isAuthenticated': false,
                 'token': null,
                 'email': null,
-                'statusText': 'You have been successfully logged out.'
+                'statusText': null
             };
         default:
             return state;

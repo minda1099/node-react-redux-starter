@@ -15,7 +15,8 @@ class Nav extends Component {
         return (
             <ul className="nav navbar-nav pull-xs-right" >
                 <li className="nav-item">
-                    <Link to="/settings" className="nav-link" >Settings</Link>
+                    <Link to="/settings" className="nav-link" activeClassName="active" >Settings</Link>
+                    
                 </li>
                 <li className="nav-item">
                     <span onClick={() => {this.props.logoutAndRedirect()}} className="nav-link" >Log Out</span>
@@ -27,10 +28,10 @@ class Nav extends Component {
         return (
             <ul className="nav navbar-nav pull-xs-right" >
                 <li className="nav-item">
-                    <Link to="/register" className="nav-link" >Register</Link>
+                    <Link to="/register" className="nav-link" activeClassName="active" >Register</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/login" className="nav-link" >Login</Link>
+                    <Link to="/login" className="nav-link" activeClassName="active" >Login</Link>
                 </li>
             </ul>
         );
