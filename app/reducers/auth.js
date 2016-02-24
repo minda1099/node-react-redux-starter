@@ -1,4 +1,4 @@
-import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER} from '../constants';
+import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER, UPDATE_USER_FAILURE, UPDATE_USER_SUCCESS } from '../constants';
 import jwtDecode from 'jwt-decode';
 
 const INITIAL_STATE = {
@@ -6,7 +6,8 @@ const INITIAL_STATE = {
     email: null,
     isAuthenticated: false,
     isAuthenticating: false,
-    statusText: null
+    statusText: null,
+    success: null
 };
 
 
@@ -25,7 +26,9 @@ export default function(state = INITIAL_STATE, action){
                 'isAuthenticated': true,
                 'token': action.payload.token,
                 'email': jwtDecode(action.payload.token).email,
-                'statusText': 'You have been successfully logged in.'
+                'statusText': action.payload.statusText,
+                'success': true
+
             };
         case LOGIN_USER_FAILURE:
             return {
@@ -34,8 +37,25 @@ export default function(state = INITIAL_STATE, action){
                 'isAuthenticated': false,
                 'token': null,
                 'email': null,
-                'statusText': `${action.payload.statusText}`
+                'statusText': action.payload.statusText,
+                'success': false
             };
+        case UPDATE_USER_SUCCESS:
+            return {
+                ...state, //take current state
+                'isAuthenticating': false,
+                'statusText': action.payload.statusText,
+                'success': true
+            };            
+        case UPDATE_USER_FAILURE:
+            return {
+                ...state, //take current state
+                'isAuthenticating': false,
+                'statusText': action.payload.statusText,
+                'success': false
+            };
+            
+            
         case LOGOUT_USER:
             return {
                 ...state, //take current state

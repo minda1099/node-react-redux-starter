@@ -1,11 +1,11 @@
-import { LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER} from '../constants';
+import { LOGIN_USER_REQUEST, LOGIN_USER_FAILURE, LOGIN_USER_SUCCESS, LOGOUT_USER, UPDATE_USER_FAILURE, UPDATE_USER_SUCCESS } from '../constants';
 
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { routeActions } from 'react-router-redux';
 
 
-import { checkHttpStatus, parseJSON } from '../utils';
+import { checkHttpStatus } from '../utils';
 
 const ROOT_URL = 'https://node-starter-th3legend.c9users.io/api';
 
@@ -14,9 +14,10 @@ export function loginUserSuccess(token) {
   return {
     type: LOGIN_USER_SUCCESS,
     payload: {
-      token: token
+      token: token,
+      statusText: null
     }
-  }
+  };
 }
 
 export function loginUserFailure(error) {
@@ -28,6 +29,36 @@ export function loginUserFailure(error) {
       statusText: error.data.error
     }
   };
+}
+
+export function updateEmailSuccess(token) {
+  localStorage.setItem('token', token);
+  return {
+    type: LOGIN_USER_SUCCESS,
+    payload: {
+      token: token,
+      statusText: 'email updated'
+    }
+  };
+}
+
+export function updatePassSuccess() {
+  return {
+    type: UPDATE_USER_SUCCESS,
+    payload: {
+      statusText: 'password updated'
+    }
+  };
+}
+
+export function updateUserFailure(error) {
+    return {
+        type: UPDATE_USER_FAILURE,
+        payload: {
+          status: error.status,
+          statusText: error.data.error
+        }
+    };
 }
 
 export function loginUserRequest() {
@@ -104,6 +135,56 @@ export function loginUser(email, password) {
             })
             .catch(error => {
                 dispatch(loginUserFailure(error));
+            });
+    };
+}
+
+export function updateEmail(newEmail, password) {
+    return function(dispatch) {
+        dispatch(loginUserRequest());
+        axios.put(`${ROOT_URL}/auth/update-email`, 
+        {
+            newEmail: newEmail, 
+            password: password,
+            token: localStorage.getItem('token')
+        })
+            .then(checkHttpStatus)
+            .then(response => {
+                try {
+                    let decoded = jwtDecode(response.data.token);
+                    dispatch(updateEmailSuccess(response.data.token));
+                    dispatch(routeActions.push('/settings'));
+                } catch (e) {
+                    dispatch(updateUserFailure({
+                        response: {
+                            status: 403,
+                            statusText: 'Invalid token'
+                        }
+                    }));
+                }
+            })
+            .catch(error => {
+               dispatch(updateUserFailure(error));
+            });
+    };
+}
+
+export function updatePassword(oldPassword, newPassword) {
+    return function(dispatch) {
+        dispatch(loginUserRequest());
+        axios.put(`${ROOT_URL}/auth/update-pass`, 
+        {
+            oldPassword: oldPassword, 
+            newPassword: newPassword,
+            token: localStorage.getItem('token')
+        })
+            .then(checkHttpStatus)
+            .then(response => {
+                dispatch(updatePassSuccess());
+                dispatch(routeActions.push('/settings'));
+            })
+            .catch(error => {
+                dispatch(updateUserFailure(error));
             });
     };
 }

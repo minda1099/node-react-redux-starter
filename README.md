@@ -20,6 +20,7 @@ to quickly build a React Redux web app.
 *  Basic security: helmet + lusca 
 *  Jslint
 *  Csslint
+*  refactor to ES6 syntax
 
 ### TO-DO List REACT + Redux
 *  React Helmet: https://github.com/nfl/react-helmet

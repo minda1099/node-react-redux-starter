@@ -15,11 +15,11 @@ class Nav extends Component {
         return (
             <ul className="nav navbar-nav pull-xs-right" >
                 <li className="nav-item">
-                    <Link to="/settings" className="nav-link" activeClassName="active" >Settings</Link>
+                    <Link to="/settings" className="nav-link react-link" activeClassName="active" >Settings</Link>
                     
                 </li>
                 <li className="nav-item">
-                    <span onClick={() => {this.props.logoutAndRedirect()}} className="nav-link" >Log Out</span>
+                    <span onClick={() => {this.props.logoutAndRedirect()}} className="nav-link react-link" >Log Out</span>
                 </li>
             </ul>
         );
@@ -28,10 +28,10 @@ class Nav extends Component {
         return (
             <ul className="nav navbar-nav pull-xs-right" >
                 <li className="nav-item">
-                    <Link to="/register" className="nav-link" activeClassName="active" >Register</Link>
+                    <Link to="/register" className="nav-link react-link" activeClassName="active" >Register</Link>
                 </li>
                 <li className="nav-item">
-                    <Link to="/login" className="nav-link" activeClassName="active" >Login</Link>
+                    <Link to="/login" className="nav-link react-link" activeClassName="active" >Login</Link>
                 </li>
             </ul>
         );
@@ -41,9 +41,7 @@ class Nav extends Component {
         return (
             <nav className="navbar navbar-dark bg-primary">
                 <Link to="/" className="navbar-brand" >Node Redux Starter</Link>
-                
                     { this.props.auth.isAuthenticated ? this.renderLoggedIn() : this.renderLoggedOut() }
-                
             </nav>
         );
     }

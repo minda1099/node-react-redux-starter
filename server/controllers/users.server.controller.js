@@ -185,7 +185,7 @@ exports.updatePassword = function(req, res, next) {
             } else {
                 res.status(400).json({
                       success: 'false',
-                      error: 'old password incorrect'
+                      error: 'current password incorrect'
                 }); 
             }
        
