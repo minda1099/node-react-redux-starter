@@ -2,8 +2,9 @@ import React, { Component, PropTypes } from 'react';
 import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
+import FacebookLogin from 'react-facebook-login';
 
-import { loginUser } from '../../actions';
+import { loginUser, fbLogin } from '../../actions';
 
 class Login extends Component {
     
@@ -28,38 +29,49 @@ class Login extends Component {
     render() {
         const { fields: { email, password }, handleSubmit, auth } = this.props;
         return (
-             <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <h2> Login </h2>
-                <div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
-                    <label> Email </label>
-                    <input type="email" className="form-control" {...email} />
-                    <div className="text-help">
-                        {email.touched ? email.error : ''}
+            <div>
+                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <h2> Login </h2>
+                    <div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
+                        <label> Email </label>
+                        <input type="email" className="form-control" {...email} />
+                        <div className="text-help">
+                            {email.touched ? email.error : ''}
+                        </div>
                     </div>
-                </div>
-                <div className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
-                    <label> Password </label>
-                    <input type="password" className="form-control" {...password}/>
-                    <div className="text-help">
-                        {password.touched ? password.error : ''}
+                    <div className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
+                        <label> Password </label>
+                        <input type="password" className="form-control" {...password}/>
+                        <div className="text-help">
+                            {password.touched ? password.error : ''}
+                        </div>
                     </div>
-                </div>
-                <div className='form-group has-danger'>
-                    <small className="text-muted text-help ">
-                        {auth.statusText}
-                    </small>
-                </div>
+                    <div className='form-group has-danger'>
+                        <small className="text-muted text-help ">
+                            {auth.statusText}
+                        </small>
+                    </div>
+                    <div className="btn-toolbar">
+                        <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Submit'} </button>
+                        <Link to="/" className={`btn btn-danger ${auth.isUpdating ? 'disabled' : ''}` }> Cancel </Link>
+                    </div>
+                </form>
                 <div className="btn-toolbar">
-                    <button type="submit" className={`btn btn-primary ${auth.isAuthenticating ? 'disabled' : ''}` }> {auth.isAuthenticating ? 'loading...' : 'Submit'} </button>
-                    <Link to="/" className={`btn btn-danger ${auth.isAuthenticating ? 'disabled' : ''}` }> Cancel </Link>
+                    <FacebookLogin
+                        appId="1559504071030678"
+                        autoLoad={false}
+                        callback={this.props.fbLogin}
+                        size={'small'}
+                        fields={'email'}
+                    />
                 </div>
-            </form>
+            </div>
         );
     }
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({loginUser}, dispatch);
+    return bindActionCreators({loginUser, fbLogin}, dispatch);
 }
 
 function mapStateToProps(state) {

@@ -3,12 +3,10 @@
 var logger          = require('morgan'); 
 var bodyParser      = require('body-parser'); 
 var path            = require('path');
-var passport        = require('passport');
 //var sass            = require('node-sass-middleware');
 var compress        = require('compression');
 var methodOverride  = require('method-override');
 //var flash           = require('express-flash');
-
 
 module.exports      = function(express, app, mongoose, config){
     

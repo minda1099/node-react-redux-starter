@@ -9,14 +9,27 @@ var mongoose = require('mongoose'),
 //USER MODEL
 var UserSchema = new Schema({
     id: ObjectId,
-    email: {
-        type: String,
-        required: '{PATH} is required.',
-        unique: true
+    local            : {
+        email        : { type: String, unique: true },
+        password     : String,
     },
-    password: {
-        type: String,
-        required: '{PATH} is required.'
+    facebook         : {
+        id           : { type: String, unique: true },
+        token        : String,
+        email        : { type: String, unique: true },
+        name         : String
+    },
+    twitter          : {
+        id           : { type: String, unique: true },
+        token        : String,
+        displayName  : String,
+        username     : String
+    },
+    google           : {
+        id           : { type: String, unique: true },
+        token        : String,
+        email        : { type: String, unique: true },
+        name         : String
     },
     data: Object,
 });

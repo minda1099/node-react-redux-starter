@@ -34,7 +34,7 @@ class UpdateEmailForm extends Component {
                         </small>
                     </div>
                     <div className="btn-toolbar">
-                        <button type="submit" className={`btn btn-primary ${auth.isAuthenticating ? 'disabled' : ''}` }> {auth.isAuthenticating ? 'loading...' : 'Submit'} </button>
+                        <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Submit'} </button>
                     </div>
                 </div>
         )
@@ -42,6 +42,7 @@ class UpdateEmailForm extends Component {
 
     render() {
         const { fields: { newEmail, password }, handleSubmit, auth } = this.props;
+        console.log(auth);
         return (
              <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <div className={`form-group ${newEmail.touched && newEmail.invalid ? 'has-danger' : ''}`}>

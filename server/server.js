@@ -4,7 +4,6 @@ var express      = require('express');
 var errorHandler = require('errorhandler');
 var mongoose     = require('mongoose');
 
-
 //CREATE EXPRESS SERVER
 var app          = express();
 

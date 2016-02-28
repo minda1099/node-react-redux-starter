@@ -1,11 +1,12 @@
-import {LOGIN_USER_REQUEST, LOGIN_USER_SUCCESS, LOGIN_USER_FAILURE, LOGOUT_USER, UPDATE_USER_FAILURE, UPDATE_USER_SUCCESS } from '../constants';
+import { UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, LOGOUT_USER } from '../constants';
 import jwtDecode from 'jwt-decode';
 
 const INITIAL_STATE = {
     token: null,
     email: null,
+    hasPass: false,
     isAuthenticated: false,
-    isAuthenticating: false,
+    isUpdating: false,
     statusText: null,
     success: null
 };
@@ -13,56 +14,40 @@ const INITIAL_STATE = {
 
 export default function(state = INITIAL_STATE, action){
     switch(action.type){
-        case LOGIN_USER_REQUEST:
+        case UPDATE_USER_REQUEST:
             return {
                 ...state, //take current state
-                'isAuthenticating': true,
+                'isUpdating': true,
                 'statusText': null
-            };
-        case LOGIN_USER_SUCCESS:
-            return {
-                ...state, //take current state
-                'isAuthenticating': false,
-                'isAuthenticated': true,
-                'token': action.payload.token,
-                'email': jwtDecode(action.payload.token).email,
-                'statusText': action.payload.statusText,
-                'success': true
-
-            };
-        case LOGIN_USER_FAILURE:
-            return {
-                ...state, //take current state
-                'isAuthenticating': false,
-                'isAuthenticated': false,
-                'token': null,
-                'email': null,
-                'statusText': action.payload.statusText,
-                'success': false
             };
         case UPDATE_USER_SUCCESS:
             return {
                 ...state, //take current state
-                'isAuthenticating': false,
+                'isUpdating': false,
+                'isAuthenticated': true,
+                'token': action.payload.token,
+                'email': jwtDecode(action.payload.token).email,
+                'hasPass': jwtDecode(action.payload.token).hasPass,
                 'statusText': action.payload.statusText,
-                'success': true
-            };            
+                'success': action.payload.success
+            };
         case UPDATE_USER_FAILURE:
             return {
                 ...state, //take current state
-                'isAuthenticating': false,
+                'isUpdating': false,
                 'statusText': action.payload.statusText,
-                'success': false
+                'success': action.payload.success
             };
-            
-            
         case LOGOUT_USER:
             return {
                 ...state, //take current state
                 'isAuthenticated': false,
+                'isUpdating': false,
                 'token': null,
                 'email': null,
-                'statusText': null
+                'hasPass': null,
+                'statusText': null,
+                'success': null
             };
         default:
             return state;
