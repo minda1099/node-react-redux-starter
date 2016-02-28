@@ -42,17 +42,16 @@ class UpdateEmailForm extends Component {
 
     render() {
         const { fields: { newEmail, password }, handleSubmit, auth } = this.props;
-        console.log(auth);
         return (
              <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
                 <div className={`form-group ${newEmail.touched && newEmail.invalid ? 'has-danger' : ''}`}>
                     <label> Email </label>
-                    <input type="email" className="form-control"  value={auth.email} {...newEmail} />
+                    <input type="email" className="form-control" disabled={auth.hasPass ? '' : 'disabled'} value={auth.email} {...newEmail} />
                     <div className="text-help">
-                        {newEmail.touched ? newEmail.error : ''}
+                        {newEmail.touched  ? newEmail.error : ''}
                     </div>
                 </div>
-                    {newEmail.touched || newEmail.active  ? this.renderConfirmPass() : ''}
+                    {(newEmail.touched || newEmail.active) && auth.hasPass ? this.renderConfirmPass() : ''}
             </form>
         );
     }

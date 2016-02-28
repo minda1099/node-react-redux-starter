@@ -20,19 +20,24 @@ class FbSettings extends Component {
                 callback={this.props.fbLogin}
                 size={'small'}
                 fields={'email'}
+                textButton="Connect to Facebook"
             />
         );
     }
     renderFbDsct(){
+        const { hasPass } = this.props.auth;
         return (
-            <button className="btn btn-primary" > Disconnect from Facebook </button>
+            <button className={`btn btn-primary ${hasPass ?  '' : 'disabled' }`} >
+                {hasPass ?  'Disconnect from Facebook' : 'Add password to disconnect' }  
+            </button>
         );
     }
 
     render() {
+        const { hasFb } = this.props.auth;
         return (
                 <div className="btn-toolbar">
-                    { this.props.auth.hasFb ? this.renderFbDsct() : this.renderFbCnct() }
+                    { hasFb ? this.renderFbDsct() : this.renderFbCnct() }
                 </div>
         );
     }

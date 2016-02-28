@@ -181,6 +181,26 @@ export function updatePassword(currentPass, newPass) {
     };
 }
 
+export function addPassword(newPass){
+    return function(dispatch) {
+        dispatch(updateUserRequest());
+        axios.put(`${ROOT_URL}/auth/add-pass`, 
+        {
+            newPass: newPass,
+            token: localStorage.getItem('token')
+        })
+            .then(checkHttpStatus)
+            .then(response => {
+                dispatch(updateUserSuccess(response.data));
+                dispatch(routeActions.push('/settings'));
+            })
+            .catch(error => {
+                dispatch(updateUserFailure(error));
+            });
+    };
+
+}
+
 export function logout() {
     localStorage.removeItem('token');
     return {

@@ -343,7 +343,7 @@ exports.createJwt = function(req, res, next) {
         user.email = user.local.email;
     }
 
-    if (!user.local && !user.local.password) {
+    if (!user.local || !user.local.password) {
         user.hasPass = false;
     } else {
         user.hasPass = true;

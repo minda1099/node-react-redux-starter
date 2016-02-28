@@ -4,9 +4,9 @@ import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import { routeActions } from 'react-router-redux';
 
-import { updatePassword } from '../../actions';
+import { addPassword } from '../../actions';
 
-class UpdatePassForm extends Component {
+class AddPassForm extends Component {
     
     static contextTypes = {
         router: PropTypes.object
@@ -27,20 +27,13 @@ class UpdatePassForm extends Component {
     }
     
     onSubmit(props){
-        let { oldPassword, newPassword } = this.props.fields;
-        this.props.updatePassword(oldPassword.value, newPassword.value);
+        let {newPassword } = this.props.fields;
+        this.props.addPassword(newPassword.value);
     }
-    renderUpdatePass(){
-        const { fields: { oldPassword, newPassword, newPassword2 }, handleSubmit, auth } = this.props;
+    renderAddPass(){
+        const { fields: { newPassword, newPassword2 }, handleSubmit, auth } = this.props;
         return (
              <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                <div className={`form-group ${oldPassword.touched && oldPassword.invalid ? 'has-danger' : ''}`}>
-                    <label> Current Password </label>
-                    <input type="password" className="form-control"  {...oldPassword} />
-                    <div className="text-help">
-                        {oldPassword.touched ? oldPassword.error : ''}
-                    </div>
-                </div>
                 <div className={`form-group ${newPassword.touched && newPassword.invalid ? 'has-danger' : ''}`}>
                     <label> New Password </label>
                     <input type="password" className="form-control" {...newPassword}/>
@@ -66,40 +59,28 @@ class UpdatePassForm extends Component {
             </form>
         );
     }
-    renderHasPass(){
-        return (
-            <div>
-                <span className="react-link react-link-underline" onClick={this.toggleForm.bind(this)}> 
-                    {this.state.showForm ? 'Hide Password Update' : 'Update Password'} 
-                </span>
-                {this.state.showForm ? this.renderUpdatePass() : ''}
-            </div>
-        );
-    }
 
     render() {
+
         return (
             <div>
-                {this.props.auth.hasPass ? this.renderHasPass() : ''} 
+                { this.props.auth.hasPass ? '' : this.renderAddPass() }
             </div>
         );
     }
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({ updatePassword }, dispatch);
+    return bindActionCreators({ addPassword }, dispatch);
 }
 
 function mapStateToProps(state) {
     return { auth: state.auth };
 }
 
-function validate({oldPassword, newPassword, newPassword2}) {
+function validate({newPassword, newPassword2}) {
     const errors = {};
-    
-    if (!oldPassword) {
-        errors.oldPassword = 'Please enter current password';
-    }
+
     if (!newPassword) {
         errors.newPassword = 'Please enter new password';
     }
@@ -109,15 +90,13 @@ function validate({oldPassword, newPassword, newPassword2}) {
         errors.newPassword2 = 'Password must be atleast 8 characters long';
     }else if (newPassword !== newPassword2) {
         errors.newPassword2 = 'Passwords don\'t match';
-    }else if (oldPassword === newPassword2) {
-        errors.newPassword2 = 'current and new passwords are the same';
     } 
     
     return errors;
 }
 
 export default reduxForm({
-    form: 'update-pass',
-    fields: ['oldPassword', 'newPassword', 'newPassword2'],
+    form: 'add-pass',
+    fields: ['newPassword', 'newPassword2'],
     validate
-},mapStateToProps, mapDispatchToProps)(UpdatePassForm);
+},mapStateToProps, mapDispatchToProps)(AddPassForm);
