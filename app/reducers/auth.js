@@ -8,7 +8,8 @@ const INITIAL_STATE = {
     isAuthenticated: false,
     isUpdating: false,
     statusText: null,
-    success: null
+    success: null,
+    hasFb: false
 };
 
 
@@ -29,7 +30,8 @@ export default function(state = INITIAL_STATE, action){
                 'email': jwtDecode(action.payload.token).email,
                 'hasPass': jwtDecode(action.payload.token).hasPass,
                 'statusText': action.payload.statusText,
-                'success': action.payload.success
+                'success': action.payload.success,
+                'hasFb': jwtDecode(action.payload.token).hasFb
             };
         case UPDATE_USER_FAILURE:
             return {
@@ -47,7 +49,8 @@ export default function(state = INITIAL_STATE, action){
                 'email': null,
                 'hasPass': null,
                 'statusText': null,
-                'success': null
+                'success': null,
+                'hasFb': false
             };
         default:
             return state;

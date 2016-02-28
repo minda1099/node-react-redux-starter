@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import { UpdateEmailForm, UpdatePassForm } from '../containers';
+import { UpdateEmailForm, UpdatePassForm, FbSettings } from '../containers';
 class Settings extends Component {
 
     constructor(props){
@@ -13,6 +13,7 @@ class Settings extends Component {
                 <h2> User Settings </h2>
                 <UpdateEmailForm />
                 <UpdatePassForm />
+                <FbSettings />
             </div>
         );
     }

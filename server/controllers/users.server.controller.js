@@ -23,7 +23,6 @@ exports.register = function(req, res, next) {
             'local.password': hash
         });
         user.save(function(err) {
-            console.log(err);
             if (err) {
                 var error = 'unknown error, please try again';
 
@@ -103,12 +102,7 @@ exports.fbLogin = function(req, res, next) {
         var fbQuery = {
             'facebook.id': req.body.id
         };
-        var fbInfo = {
-            'facebook.id'   : req.body.id,
-            'facebook.token': req.body.accessToken,
-            'facebook.email': req.body.email,
-            'local.email'   : req.body.email
-        };
+
         User.findOne(fbQuery, function(err, user) {
             if (err) {
                 if (err.code === 11000) { //users with id already in db
@@ -124,6 +118,13 @@ exports.fbLogin = function(req, res, next) {
                     var email = req.body.email;
                     if(!email) email = null;
                     if (err) {//not logged in - create new user
+                        let fbInfo = {
+                            'facebook.id'   : req.body.id,
+                            'facebook.token': req.body.accessToken,
+                            'facebook.email': req.body.email,
+                            'local.email'   : req.body.email
+                        };
+
                         var user = new User(fbInfo);
                         user.save(function(err) {
                             if (err) {
@@ -150,6 +151,12 @@ exports.fbLogin = function(req, res, next) {
                         var currentUser = {
                             'local.email': data.email
                         };
+                        let fbInfo = {
+                            'facebook.id'   : req.body.id,
+                            'facebook.token': req.body.accessToken,
+                            'facebook.email': req.body.email
+                        };
+                        
                         User.findOneAndUpdate(currentUser, fbInfo, function(err, user) {
                             if (err) {
                                 var error = 'unknown error, please try again';
@@ -374,7 +381,6 @@ function checkJwt(req, callback) {
                 let error = 'failed to authenticate token';
                 callback(error);
             } else {
-                console.log('else');
                 callback(null, decoded);
             }
         });

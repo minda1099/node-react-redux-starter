@@ -105,11 +105,11 @@ export function fbLogin({email, id, accessToken}){
         {
             email: email, 
             id: id,
-            accessToken: accessToken
+            accessToken: accessToken,
+            token: localStorage.getItem('token')
         })
             .then(checkHttpStatus)
             .then(response => {
-                console.log(response);
                 try {
                     let decoded = jwtDecode(response.data.token);
                     dispatch(updateUserSuccess(response.data));
