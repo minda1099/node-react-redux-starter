@@ -312,6 +312,53 @@ exports.updatePassword = function(req, res, next) {
     }
 };
 
+exports.addPassword = function(req, res, next) {
+    //check if body has passwords
+    if ( !req.body.newPass) {
+        res.status(400).json({
+            success: false,
+            error: 'please include password'
+        });
+    } else {
+        var userEmailQuery = {
+            'local.email': req.decoded.email
+        };
+        User.findOne(userEmailQuery, function(err, user) {
+            if (err) {
+                res.status(400).json({
+                    success: false,
+                    error: 'unknown error'
+                });
+            }
+
+            if (!user) {
+                res.status(400).json({
+                    success: false,
+                    error: 'unknown error'
+                });
+            } else {
+                //if (bcrypt.compareSync(req.body.currentPass, user.local.password)) {
+                    var newHash = bcrypt.hashSync(req.body.newPass, bcrypt.genSaltSync(10));
+
+                    User.findOneAndUpdate(userEmailQuery, {
+                        'local.password': newHash
+                    }, function(err, doc) {
+                        if (err) throw err;
+
+                        //add new data to req for create JWT
+                        req.body.newData = {};
+                        user = user.toObject(); //convert to object
+                        user.hasPass = true;
+                        req.body.newData.user = user;
+                        req.body.newData.message = 'password added'; //set response message for jwt middleware
+                        next();
+                    });
+            }
+        });
+    }
+};
+
+
 //middleware for checking if users if authenticated
 exports.requireAuth = function(req, res, next) {
     checkJwt(req, function(err, data) {
@@ -342,15 +389,18 @@ exports.createJwt = function(req, res, next) {
     if (user.local && user.local.email) { //check for local and local email
         user.email = user.local.email;
     }
+    if (!user.local.password && !user.hasPass) {
 
-    if (!user.local || !user.local.password) {
         user.hasPass = false;
     } else {
         user.hasPass = true;
     }
+
     
-    if(!user.hasFb){
+    if(!user.hasFb && !user.facebook){
         user.hasFb = false;
+    } else {
+        user.hasFb = true;
     }
 
     delete user.local; //remove local prop

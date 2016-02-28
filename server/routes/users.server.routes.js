@@ -16,7 +16,7 @@ module.exports = function(express, app, config) {
 
     apiAuthRoutes.route('/update-pass').put(users.requireAuth, users.updatePassword, users.createJwt); //{token, oldPassword, newPassword} > sucess
 
-    apiAuthRoutes.route('/add-pass').put(users.requireAuth, users.updatePassword, users.createJwt); //{token, newPassword} > sucess
+    apiAuthRoutes.route('/add-pass').put(users.requireAuth, users.addPassword, users.createJwt); //{token, newPassword} > sucess
 
     app.use('/api/auth/', apiAuthRoutes);
 
