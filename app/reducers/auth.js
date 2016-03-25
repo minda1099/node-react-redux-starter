@@ -31,7 +31,8 @@ export default function(state = INITIAL_STATE, action){
                 'hasPass': jwtDecode(action.payload.token).hasPass,
                 'statusText': action.payload.statusText,
                 'success': action.payload.success,
-                'hasFb': jwtDecode(action.payload.token).hasFb
+                'hasFb': jwtDecode(action.payload.token).hasFb,
+                'hasGoog': jwtDecode(action.payload.token).hasGoog
             };
         case UPDATE_USER_FAILURE:
             return {
@@ -50,7 +51,8 @@ export default function(state = INITIAL_STATE, action){
                 'hasPass': null,
                 'statusText': null,
                 'success': null,
-                'hasFb': false
+                'hasFb': false,
+                'hasGoog': false
             };
         default:
             return state;

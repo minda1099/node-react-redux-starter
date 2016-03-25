@@ -130,6 +130,38 @@ export function fbLogin({email, id, accessToken}){
     };
 }
 
+export function gLogin({code}){
+    return function(dispatch) {
+        dispatch(updateUserRequest());
+        axios.post(`${ROOT_URL}/auth/google`, 
+        {
+            accessToken: code,
+            token: localStorage.getItem('token')
+        })
+            .then(checkHttpStatus)
+            .then(response => {
+                console.log(response);
+                try {
+                    let decoded = jwtDecode(response.data.token);
+                    dispatch(updateUserSuccess(response.data));
+                    dispatch(routeActions.push('/settings'));
+                }  catch (e) {
+                    dispatch(updateUserFailure({
+                        status: 403,
+                        data: {
+                            statusText: 'invalid token',
+                            success: false
+                        }
+                    }));
+                }
+            })
+            .catch(error => {
+              dispatch(updateUserFailure(error));
+            });
+    };
+}
+
+
 export function updateEmail(newEmail, password) {
     return function(dispatch) {
         dispatch(updateUserRequest());

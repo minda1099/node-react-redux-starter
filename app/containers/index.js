@@ -6,3 +6,4 @@ export UpdateEmailForm from './auth/update-email-form';
 export UpdatePassForm from './auth/update-pass-form';
 export AddPassForm from './auth/add-pass-form';
 export FbSettings from './auth/fb-settings';
+export GoogSettings from './auth/goog-settings';

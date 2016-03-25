@@ -8,24 +8,29 @@ to quickly build a React Redux web app.
 *  ~~MongoDB setup~~
 *  ~~User models~~
 *  ~~Email Auth~~
-*  Facebook Auth
+*  ~~Facebook Auth~~
+*  ~~Google Auth~~
 *  Twitter Auth
 *  Password Reset Email
 *  ~~Password Email Change~~
 *  ~~Sessions + Cookies~~ #wontdo
 *  Mandrill Intergration
 *  ~~Setup for production and development modes~~
-*  Sass Support 
+*  Scss Support 
 *  Css + Js Minifcation
 *  Basic security: helmet + lusca 
 *  Jslint
 *  Csslint
 *  refactor to ES6 syntax
+*  Testing framework
 
 ### TO-DO List REACT + Redux
 *  React Helmet: https://github.com/nfl/react-helmet
 *  ~~Auth w/ email & JWT, Login, Logout, Register~~
-*  Auth w/ facebook, google, twitter & JWT
+*  ~~Facebook auth~~
+*  ~~Google auth~~
+*  Twitter auth
+*  Testing framework
 
 ### NPM Scripts
 
@@ -46,4 +51,4 @@ npm run dev
 npm run start
 ```
 
-Follow me on Twitter: [@anthonyjgrove](https://twitter.com/anthonyjgrove)
+#### Follow me on Twitter: [@anthonyjgrove](https://twitter.com/anthonyjgrove)

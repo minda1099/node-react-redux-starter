@@ -3,8 +3,9 @@ import { reduxForm } from 'redux-form';
 import { Link } from 'react-router';
 import { bindActionCreators } from 'redux';
 import FacebookLogin from 'react-facebook-login';
+import GoogleLogin from 'react-google-login';
 
-import { registerUser, fbLogin } from '../../actions';
+import { registerUser, fbLogin, gLogin } from '../../actions';
 
 class Register extends Component {
     
@@ -64,13 +65,20 @@ class Register extends Component {
                         fields={'email'}
                     />
                 </div>
+                <div className="btn-toolbar">
+                    <GoogleLogin
+                        clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
+                        callback={this.props.gLogin}
+                        offline={true}
+                    />
+                </div>
             </div>
         );
     }
 }
 
 function mapDispatchToProps(dispatch){
-    return bindActionCreators({registerUser, fbLogin}, dispatch);
+    return bindActionCreators({registerUser, fbLogin, gLogin}, dispatch);
 }
 
 function mapStateToProps(state) {

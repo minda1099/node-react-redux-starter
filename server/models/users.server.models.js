@@ -4,12 +4,10 @@ var mongoose = require('mongoose'),
     Schema = mongoose.Schema,
     ObjectId = Schema.ObjectId;
 
-
-
 //USER MODEL
 var UserSchema = new Schema({
     id: ObjectId,
-    local            : {
+    local       : {
         email        : { type: String, unique: true },
         password     : String,
     },
@@ -19,13 +17,13 @@ var UserSchema = new Schema({
         email        : { type: String, unique: true },
         name         : String
     },
-    twitter          : {
+    twitter     : {
         id           : { type: String, unique: true },
         token        : String,
         displayName  : String,
         username     : String
     },
-    google           : {
+    google      : {
         id           : { type: String, unique: true },
         token        : String,
         email        : { type: String, unique: true },

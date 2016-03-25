@@ -1,11 +1,15 @@
 'use strict';
-var mongoose = require('mongoose'),
-  User = mongoose.model('User');
+var mongoose = require('mongoose');
+var User = mongoose.model('User');
 
 var bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken'); // used to create, sign, and verify tokens
 var graph = require('fbgraph');
-graph.setVersion('2.4');
+    graph.setVersion('2.4');
+    
+var google = require('googleapis');
+var OAuth2 = google.auth.OAuth2;
+var plus = google.plus('v1');
 
 var config = require('../config/secret.config');
 var secret = config.secret;
@@ -232,6 +236,137 @@ exports.fbLogin = function(req, res, next) {
   }
 };
 
+exports.gLogin = function(req, res, next) {
+  var oauth2Client = new OAuth2(config.googleAuth.clientID, config.googleAuth.clientSecret, config.googleAuth.redirectUri);
+  if (!req.body.accessToken) {
+    res.status(400).json({
+      success: false,
+      error: 'your request is missing information'
+    });
+  } else {
+    var gAccessToken = req.body.accessToken;
+    oauth2Client.getToken(gAccessToken, function(err, tokens) {
+      // Now tokens contains an access_token and an optional refresh_token. Save them.
+      if(err) {
+        console.log(err);
+        res.status(400).json({
+          success: false,
+          error: err.message
+        });
+      } else {
+        
+        oauth2Client.setCredentials(tokens);
+
+        plus.people.get({ userId: 'me', auth: oauth2Client }, function(err, profile) {
+          if (err) {
+            res.status(400).json({
+              success: false,
+              error: err.message
+            });
+          }
+        var isAuth,
+            newGoogUser,
+            googInfo,
+            googId = profile.id,
+            googToken = tokens.access_token,
+            googEmail = profile.emails[0].value;
+        //CHECK IF USER IS AUTHENTICATED via JWT
+        checkJwt(req, function(err, data) {
+          if (err) { //Not Authenticated 
+            isAuth = false; //user is not logged in
+          } else {
+            var userEmail = data.email; //logged in user email
+            isAuth = true; //user is logged in
+          }
+          var googQuery = {
+            'google.id': googId
+          };
+          //CHECK IF Request Google Id is in Database
+          User.findOne(googQuery, function(err, user) {
+            if (err) {} else {
+              if (user === null) { //Google id is not in DB
+                newGoogUser = true;
+
+              } else { //Google id is in DB
+                newGoogUser = false;
+              }
+              if (isAuth && newGoogUser) { // add to logged-in account
+                var currentUser = {
+                  'local.email': userEmail
+                };
+                googInfo = {
+                  'google.id': googId,
+                  'google.token': googToken,
+                  'google.email': googEmail,
+                };
+
+                User.findOneAndUpdate(currentUser, googInfo, function(err, user) {
+                  if (err) {
+                    res.status(400).json({
+                      success: false,
+                      error: 'unknown error, please try again'
+                    });
+                  } else {
+                    req.body.newData = {};
+                    user = user.toObject(); //convert to object
+                    user.hasGoog = true;
+                    req.body.newData.user = user;
+                    req.body.newData.message = 'google connection success'; //set response message for jwt middleware
+                    next();
+                  }
+                });
+              }
+              if (isAuth && !newGoogUser) { // error 'this Facebook account is already linked to a user'
+                res.status(400).json({
+                  success: false,
+                  error: 'this google account is already linked to a user'
+                });
+              }
+              if (!isAuth && newGoogUser) { // sign up - add to db
+                googInfo = {
+                  'google.id': googId,
+                  'google.token': googToken,
+                  'google.email': googEmail,
+                  'local.email': googEmail
+                };
+                var newUser = new User(googInfo);
+                newUser.save(function(err) {
+                  if (err) {
+                    var error = 'unknown error, please try again';
+                    if (err.code === 11000) {
+                      error = 'email is already used, please try another';
+                    }
+                    res.status(400).json({
+                      success: false,
+                      error: error
+                    });
+                  } else {
+                    //add new data to req for create JWT
+                    req.body.newData = {};
+                    newUser = newUser.toObject(); //convert to object
+                    newUser.hasGoog = true;
+                    req.body.newData.user = newUser;
+                    req.body.newData.message = 'google signup success'; //set response message for jwt middleware
+                    next();
+                  }
+                });
+              }
+              if (!isAuth && !newGoogUser) { // log in
+                req.body.newData = {};
+                user = user.toObject(); //convert to object
+                req.body.newData.user = user;
+                req.body.newData.message = 'google login success'; //set response message for jwt middleware
+                next();
+              }
+            }
+          });
+        });
+      });
+      }
+    });
+  }
+};
+
 exports.updateEmail = function(req, res, next) {
   //check if body has newEmail and password
   if (!req.body.newEmail || !req.body.password) {
@@ -449,11 +584,20 @@ exports.createJwt = function(req, res, next) {
   } else {
     user.hasFb = true;
   }
+  
+  if (!user.hasGoog && !user.google) {
+    user.hasGoog = false;
+  } else {
+    user.hasGoog = true;
+  }
 
   delete user.local; //remove local prop
   delete user.facebook; //remove facebook prop
+  delete user.google; //remove google prop
   delete user.__v; //remove versionKey prop
 
+
+  console.log(user);
   //create jwt
   var token = jwt.sign(user, secret, {
     expiresIn: 1440 * 60 // expires in 24 hours
@@ -466,7 +610,6 @@ exports.createJwt = function(req, res, next) {
   });
 
 };
-
 
 function checkJwt(req, callback) {
   // check header or url parameters or post parameters for token

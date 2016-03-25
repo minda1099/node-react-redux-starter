@@ -34,7 +34,7 @@ class UpdateEmailForm extends Component {
                         </small>
                     </div>
                     <div className="btn-toolbar">
-                        <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Submit'} </button>
+                        <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Save'} </button>
                     </div>
                 </div>
         )

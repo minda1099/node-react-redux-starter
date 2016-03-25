@@ -12,6 +12,8 @@ module.exports = function(express, app, config) {
 
     apiAuthRoutes.route('/facebook').post(users.fbLogin, users.createJwt); //{name, id, acessToken} > token
 
+    apiAuthRoutes.route('/google').post(users.gLogin, users.createJwt); //{name, id, acessToken} > token
+
     apiAuthRoutes.route('/update-email').put(users.requireAuth, users.updateEmail, users.createJwt); //{token, password, newEmail} > new Token
 
     apiAuthRoutes.route('/update-pass').put(users.requireAuth, users.updatePassword, users.createJwt); //{token, oldPassword, newPassword} > sucess
