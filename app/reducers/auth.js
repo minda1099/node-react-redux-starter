@@ -9,7 +9,8 @@ const INITIAL_STATE = {
     isUpdating: false,
     statusText: null,
     success: null,
-    hasFb: false
+    hasFb: false,
+    hasGoog: false
 };
 
 
