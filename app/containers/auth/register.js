@@ -29,18 +29,18 @@ class Register extends Component {
     render() {
         const { fields: { email, password }, handleSubmit, auth } = this.props;
         return (
-            <div>
-                <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    <h2> Register </h2>
+            <div className="col-md-6 offset-md-3 col-sm-12 margin-top-50 ">
+                <form className="" onSubmit={handleSubmit(this.onSubmit.bind(this))}>
+                    <h2 className="text-xs-center"> REGISTER </h2>
                     <div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
-                        <label> Email </label>
+                        <label> Email: </label>
                         <input type="email" className="form-control" {...email} />
                         <div className="text-help">
                             {email.touched ? email.error : ''}
                         </div>
                     </div>
                     <div className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
-                        <label> Password </label>
+                        <label> Password: </label>
                         <input type="password" className="form-control" {...password}/>
                         <div className="text-help">
                             {password.touched ? password.error : ''}
@@ -51,27 +51,26 @@ class Register extends Component {
                             {auth.statusText}
                         </small>
                     </div>
-                    <div className="btn-toolbar">
-                        <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Submit'} </button>
-                        <Link to="/" className={`btn btn-danger ${auth.isUpdating ? 'disabled' : ''}` }> Cancel </Link>
+                    <hr/>
+                    <div className="btn-toolbar container">
+                        <button type="submit" className={`btn btn-success btn-inline btn-auth ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Register'} </button>
+                        <FacebookLogin
+                            appId="1559504071030678"
+                            autoLoad={false}
+                            callback={this.props.fbLogin}
+                            cssClass="btn btn-primary btn-inline btn-auth"
+                            textButton="Facebook"
+                            fields={'email'}
+                        />
+                        <GoogleLogin
+                            clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
+                            callback={this.props.gLogin}
+                            offline={true}
+                            cssClass="btn btn-danger btn-inline btn-auth"
+                            buttonText="Google"
+                        />
                     </div>
                 </form>
-                <div className="btn-toolbar">
-                    <FacebookLogin
-                        appId="1559504071030678"
-                        autoLoad={false}
-                        callback={this.props.fbLogin}
-                        size={'small'}
-                        fields={'email'}
-                    />
-                </div>
-                <div className="btn-toolbar">
-                    <GoogleLogin
-                        clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
-                        callback={this.props.gLogin}
-                        offline={true}
-                    />
-                </div>
             </div>
         );
     }

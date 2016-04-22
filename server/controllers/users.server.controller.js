@@ -596,7 +596,6 @@ exports.createJwt = function(req, res, next) {
   delete user.google; //remove google prop
   delete user.__v; //remove versionKey prop
 
-
   console.log(user);
   //create jwt
   var token = jwt.sign(user, secret, {

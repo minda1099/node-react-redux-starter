@@ -30,9 +30,9 @@ class Login extends Component {
     render() {
         const { fields: { email, password }, handleSubmit, auth } = this.props;
         return (
-            <div>
+            <div className="col-md-6 offset-md-3 col-sm-12 margin-top-50 ">
                 <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-                    <h2> Login </h2>
+                    <h2 className="text-md-center"> LOGIN </h2>
                     <div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
                         <label> Email </label>
                         <input type="email" className="form-control" {...email} />
@@ -52,27 +52,26 @@ class Login extends Component {
                             {auth.statusText}
                         </small>
                     </div>
-                    <div className="btn-toolbar">
-                        <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Submit'} </button>
-                        <Link to="/" className={`btn btn-danger ${auth.isUpdating ? 'disabled' : ''}` }> Cancel </Link>
+                    <hr/>
+                    <div className="btn-toolbar container">
+                        <button type="submit" className={`btn btn-success btn-inline  btn-auth ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Login'} </button>
+                        <FacebookLogin
+                            appId="1559504071030678"
+                            autoLoad={false}
+                            callback={this.props.fbLogin}
+                            cssClass="btn btn-primary btn-inline btn-auth"
+                            textButton="Facebook"
+                            fields={'email'}
+                        />
+                        <GoogleLogin
+                            clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
+                            callback={this.props.gLogin}
+                            offline={true}
+                            cssClass="btn btn-danger btn-inline btn-auth"
+                            buttonText="Google"
+                        />
                     </div>
                 </form>
-                <div className="btn-toolbar">
-                    <FacebookLogin
-                        appId="1559504071030678"
-                        autoLoad={false}
-                        callback={this.props.fbLogin}
-                        size={'small'}
-                        fields={'email'}
-                    />
-                </div>
-                <div className="btn-toolbar">
-                    <GoogleLogin
-                        clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
-                        callback={this.props.gLogin}
-                        offline={true}
-                    />
-                </div>
             </div>
         );
     }

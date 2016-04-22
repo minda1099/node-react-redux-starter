@@ -10,6 +10,7 @@ to quickly build a React Redux web app.
 *  ~~Email Auth~~
 *  ~~Facebook Auth~~
 *  ~~Google Auth~~
+*  Disconnect Social Accounts
 *  Twitter Auth
 *  Password Reset Email
 *  ~~Password Email Change~~
@@ -30,6 +31,8 @@ to quickly build a React Redux web app.
 *  ~~Facebook auth~~
 *  ~~Google auth~~
 *  Twitter auth
+*  Disconnect Social Accounts
+*  Error / Success Message Settings Containter
 *  Testing framework
 
 ### NPM Scripts

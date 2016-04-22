@@ -1,7 +1,29 @@
+html, body {
+    font-family: 'Roboto', sans-serif;
+}
+
+.margin-top-50 {
+    margin-top: 50px
+}
+
+.margin-vert-30 {
+    margin: 30px 0;
+}
+
+/*buttons/ links*/
 .react-link{
     cursor: pointer; 
     cursor: hand;
 }
 .react-link-underline{
     color: blue;
+}
+
+.btn-inline {
+    float: left;
+    margin: 0 3px;
+}
+
+.btn-auth {
+    width: 100px;  
 }

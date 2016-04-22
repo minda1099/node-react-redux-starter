@@ -9,12 +9,14 @@ class Settings extends Component {
 
     render() {
         return (
-            <div>
+            <div className="col-md-6 offset-md-3 col-sm-12 margin-top-50 ">
                 <h2> User Settings </h2>
                 <UpdateEmailForm />
                 <UpdatePassForm />
-                <FbSettings />
-                <GoogSettings />
+                <div className="btn-toolbar container margin-vert-30">
+                    <FbSettings />
+                    <GoogSettings />
+                </div>
                 <AddPassForm />
             </div>
         );

@@ -18,7 +18,7 @@ class FbSettings extends Component {
                 appId="1559504071030678"
                 autoLoad={false}
                 callback={this.props.fbLogin}
-                size={'small'}
+                cssClass="btn btn-primary btn-inline"
                 fields={'email'}
                 textButton="Connect to Facebook"
             />
@@ -27,7 +27,7 @@ class FbSettings extends Component {
     renderFbDsct(){
         const { hasPass } = this.props.auth;
         return (
-            <button className={`btn btn-primary ${hasPass ?  '' : 'disabled' }`} >
+            <button className={`btn btn-primary btn-inline ${hasPass ?  '' : 'disabled' }`} >
                 {hasPass ?  'Disconnect from Facebook' : 'Add password to disconnect' }  
             </button>
         );
@@ -36,9 +36,9 @@ class FbSettings extends Component {
     render() {
         const { hasFb } = this.props.auth;
         return (
-                <div className="btn-toolbar">
-                    { hasFb ? this.renderFbDsct() : this.renderFbCnct() }
-                </div>
+            <div >
+                { hasFb ? this.renderFbDsct() : this.renderFbCnct() }
+            </div>
         );
     }
 }
