@@ -97,143 +97,148 @@ exports.login = function(req, res, next) {
 };
 
 exports.fbLogin = function(req, res, next) {
-  if (!req.body.id || !req.body.accessToken) {
-    res.status(400).json({
-      success: false,
-      error: 'your request is missing information'
-    });
-  } else {
-    var fbAccessToken = req.body.accessToken,
-      fbId = req.body.id,
-      fbEmail = req.body.email || null; //for users who don't allow email to be given
+  console.log(req.body.id);
+  console.log(req.body.accessToken);
+  
+  
+  // if (!req.body.id || !req.body.accessToken) {
+  //   res.status(400).json({
+  //     success: false,
+  //     error: 'your request is missing information'
+  //   });
+  // } else {
+    
+  //   var fbAccessToken = req.body.accessToken,
+  //     fbId = req.body.id,
+  //     fbEmail = req.body.email || null; //for users who don't allow email to be given
 
-    //CHECK IF FACEBOOK ACCESS TOKEN IS AUTHENTIC 
-    graph.extendAccessToken({
-      'access_token': fbAccessToken,
-      'client_id': config.facebookAuth.clientID,
-      'client_secret': config.facebookAuth.clientSecret
-    }, function(err, facebookRes) {
-      if (err) { // NOT AUTHENTIC
-        res.status(400).json({
-          success: false,
-          error: err.message
-        });
-      } else { //IS AUTHENTIC
-        fbAccessToken = facebookRes.access_token; //Set token to refreshed token
-        var isAuth, newFbUser, fbInfo;
-        //CHECK IF USER IS AUTHENTICATED via JWT
-        checkJwt(req, function(err, data) {
-          if (err) { //Not Authenticated 
-            isAuth = false; //user is not logged in
-          } else {
-            var userEmail = data.email; //logged in user email
-            isAuth = true; //user is logged in
-          }
-          var fbQuery = {
-            'facebook.id': fbId
-          };
-          //CHECK IF Request Facebook Id is in Database
-          User.findOne(fbQuery, function(err, user) {
-            if (err) {} else {
-              if (user === null) { //FB id is not in DB
-                newFbUser = true;
+  //   //CHECK IF FACEBOOK ACCESS TOKEN IS AUTHENTIC 
+  //   graph.extendAccessToken({
+  //     'access_token': fbAccessToken,
+  //     'client_id': config.facebookAuth.clientID,
+  //     'client_secret': config.facebookAuth.clientSecret
+  //   }, function(err, facebookRes) {
+  //     if (err) { // NOT AUTHENTIC
+  //       res.status(400).json({
+  //         success: false,
+  //         error: err.message
+  //       });
+  //     } else { //IS AUTHENTIC
+  //       fbAccessToken = facebookRes.access_token; //Set token to refreshed token
+  //       var isAuth, newFbUser, fbInfo;
+  //       //CHECK IF USER IS AUTHENTICATED via JWT
+  //       checkJwt(req, function(err, data) {
+  //         if (err) { //Not Authenticated 
+  //           isAuth = false; //user is not logged in
+  //         } else {
+  //           var userEmail = data.email; //logged in user email
+  //           isAuth = true; //user is logged in
+  //         }
+  //         var fbQuery = {
+  //           'facebook.id': fbId
+  //         };
+  //         //CHECK IF Request Facebook Id is in Database
+  //         User.findOne(fbQuery, function(err, user) {
+  //           if (err) {} else {
+  //             if (user === null) { //FB id is not in DB
+  //               newFbUser = true;
 
-              } else { //FB id is in DB
-                newFbUser = false;
-              }
-              if (isAuth && newFbUser) { // add to logged-in account
-                var currentUser = {
-                  'local.email': userEmail
-                };
-                fbInfo = {
-                  'facebook.id': fbId,
-                  'facebook.token': fbAccessToken,
-                  'facebook.email': fbEmail,
-                };
+  //             } else { //FB id is in DB
+  //               newFbUser = false;
+  //             }
+  //             if (isAuth && newFbUser) { // add to logged-in account
+  //               var currentUser = {
+  //                 'local.email': userEmail
+  //               };
+  //               fbInfo = {
+  //                 'facebook.id': fbId,
+  //                 'facebook.token': fbAccessToken,
+  //                 'facebook.email': fbEmail,
+  //               };
 
-                User.findOneAndUpdate(currentUser, fbInfo, function(err, user) {
-                  if (err) {
-                    res.status(400).json({
-                      success: false,
-                      error: 'unknown error, please try again'
-                    });
-                  } else {
-                    req.body.newData = {};
-                    user = user.toObject(); //convert to object
-                    user.hasFb = true;
-                    req.body.newData.user = user;
-                    req.body.newData.message = 'facebook connection success'; //set response message for jwt middleware
-                    next();
-                  }
-                });
-              }
-              if (isAuth && !newFbUser) { // error 'this Facebook account is already linked to a user'
-                res.status(400).json({
-                  success: false,
-                  error: 'this Facebook account is already linked to a user'
-                });
-              }
-              if (!isAuth && newFbUser) { // sign up - add to db
-                fbInfo = {
-                  'facebook.id': fbId,
-                  'facebook.token': fbAccessToken,
-                  'facebook.email': fbEmail,
-                  'local.email': fbEmail
-                };
-                var newUser = new User(fbInfo);
-                newUser.save(function(err) {
-                  if (err) {
-                    var error = 'unknown error, please try again';
-                    if (err.code === 11000) {
-                      error = 'email is already used, please try another';
-                    }
-                    res.status(400).json({
-                      success: false,
-                      error: error
-                    });
-                  } else {
-                    //add new data to req for create JWT
-                    req.body.newData = {};
-                    newUser = newUser.toObject(); //convert to object
-                    newUser.hasFb = true;
-                    req.body.newData.user = newUser;
-                    req.body.newData.message = 'facebook signup success'; //set response message for jwt middleware
-                    next();
-                  }
-                });
-              }
-              if (!isAuth && !newFbUser) { // log in
-                ///NEED TO VERIFY FB TOKEN MATCHES DB USER
-                graph.get('me', {
-                  access_token: fbAccessToken
-                }, function(err, data) {
-                  if (err) {
-                    res.status(400).json({
-                      success: false,
-                      error: err.message
-                    });
-                  } else {
-                    if (data.id === user.facebook.id) { //makes sure request token fbId is equal to db fbId
-                      req.body.newData = {};
-                      user = user.toObject(); //convert to object
-                      req.body.newData.user = user;
-                      req.body.newData.message = 'facebook login success'; //set response message for jwt middleware
-                      next();
-                    } else {
-                      res.status(400).json({
-                        success: false,
-                        error: 'facebook token error'
-                      });
-                    }
-                  }
-                });
-              }
-            }
-          });
-        });
-      }
-    });
-  }
+  //               User.findOneAndUpdate(currentUser, fbInfo, function(err, user) {
+  //                 if (err) {
+  //                   res.status(400).json({
+  //                     success: false,
+  //                     error: 'unknown error, please try again'
+  //                   });
+  //                 } else {
+  //                   req.body.newData = {};
+  //                   user = user.toObject(); //convert to object
+  //                   user.hasFb = true;
+  //                   req.body.newData.user = user;
+  //                   req.body.newData.message = 'facebook connection success'; //set response message for jwt middleware
+  //                   next();
+  //                 }
+  //               });
+  //             }
+  //             if (isAuth && !newFbUser) { // error 'this Facebook account is already linked to a user'
+  //               res.status(400).json({
+  //                 success: false,
+  //                 error: 'this Facebook account is already linked to a user'
+  //               });
+  //             }
+  //             if (!isAuth && newFbUser) { // sign up - add to db
+  //               fbInfo = {
+  //                 'facebook.id': fbId,
+  //                 'facebook.token': fbAccessToken,
+  //                 'facebook.email': fbEmail,
+  //                 'local.email': fbEmail
+  //               };
+  //               var newUser = new User(fbInfo);
+  //               newUser.save(function(err) {
+  //                 if (err) {
+  //                   var error = 'unknown error, please try again';
+  //                   if (err.code === 11000) {
+  //                     error = 'email is already used, please try another';
+  //                   }
+  //                   res.status(400).json({
+  //                     success: false,
+  //                     error: error
+  //                   });
+  //                 } else {
+  //                   //add new data to req for create JWT
+  //                   req.body.newData = {};
+  //                   newUser = newUser.toObject(); //convert to object
+  //                   newUser.hasFb = true;
+  //                   req.body.newData.user = newUser;
+  //                   req.body.newData.message = 'facebook signup success'; //set response message for jwt middleware
+  //                   next();
+  //                 }
+  //               });
+  //             }
+  //             if (!isAuth && !newFbUser) { // log in
+  //               ///NEED TO VERIFY FB TOKEN MATCHES DB USER
+  //               graph.get('me', {
+  //                 access_token: fbAccessToken
+  //               }, function(err, data) {
+  //                 if (err) {
+  //                   res.status(400).json({
+  //                     success: false,
+  //                     error: err.message
+  //                   });
+  //                 } else {
+  //                   if (data.id === user.facebook.id) { //makes sure request token fbId is equal to db fbId
+  //                     req.body.newData = {};
+  //                     user = user.toObject(); //convert to object
+  //                     req.body.newData.user = user;
+  //                     req.body.newData.message = 'facebook login success'; //set response message for jwt middleware
+  //                     next();
+  //                   } else {
+  //                     res.status(400).json({
+  //                       success: false,
+  //                       error: 'facebook token error'
+  //                     });
+  //                   }
+  //                 }
+  //               });
+  //             }
+  //           }
+  //         });
+  //       });
+  //     }
+  //   });
+  // }
 };
 
 exports.gLogin = function(req, res, next) {

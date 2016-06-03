@@ -1,17 +1,31 @@
+const path = require('path');
+const webpack = require('webpack');
+const ExtractTextPlugin = require('extract-text-webpack-plugin');
 
 module.exports = {
-  entry: ['./app/app.js'],
+  devtool: 'eval',
+  entry: [
+    'webpack/hot/dev-server',
+    './app/app.js',
+  ],
   output: {
-        path: __dirname + "/public/js",
-        filename: "bundle.js"
+    path: path.join(__dirname, 'public/js/'),
+    filename: "bundle.js",
   },
   module: {
     loaders: [{
+      test: /\.js$/,
       exclude: [/bower_components/, /node_modules/, /server/, /public/],
-      loader: 'babel'
-    }]
+      loader: 'babel',
+    }, {
+      test: /\.scss$/,
+      loader: ExtractTextPlugin.extract(['css', 'sass']),
+    }, {
+      test: /\.(png|jpg|svg)$/,
+      loader: 'file-loader',
+    }],
   },
-  resolve: {
-    extensions: ['', '.js', '.jsx']
-  }
+  plugins: [
+    new webpack.HotModuleReplacementPlugin(),
+  ],
 };
