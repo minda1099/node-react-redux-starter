@@ -1,5 +1,5 @@
 /node_modules
-/public/js/bundle.js
+/public/*
 npm-debug.log
 /server/config/production.js
 /server/config/development.js

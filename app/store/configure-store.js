@@ -7,19 +7,17 @@ import thunk from 'redux-thunk';
 
 import rootReducer from '../reducers';
 
-export default function configureStore(initialState) {
-
-    const middleware = compose(
-      applyMiddleware(reduxPromise),
-      applyMiddleware(thunk),
-      applyMiddleware(createLogger())
-    );
-    
-    const store = createStore(
-      rootReducer,
-      middleware
-    );
-    
-    return store;
-
+export default function configureStore() {
+  const middleware = compose(
+    applyMiddleware(reduxPromise),
+    applyMiddleware(thunk),
+    applyMiddleware(createLogger())
+  );
+  
+  const store = createStore(
+    rootReducer,
+    middleware
+  );
+  
+  return store;
 }

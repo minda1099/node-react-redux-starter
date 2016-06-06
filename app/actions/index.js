@@ -15,7 +15,7 @@ export function updateUserRequest() {
   };
 }
 
-export function updateUserSuccess({token, message, success}) {
+export function updateUserSuccess({ token, message, success }) {
   localStorage.setItem('token', token);
   return {
     type: UPDATE_USER_SUCCESS,
@@ -98,7 +98,7 @@ export function loginUser(email, password) {
     };
 }
 
-export function fbLogin({email, id, accessToken}){
+export function fbLogin({ email, id, accessToken }){
     return function(dispatch) {
         dispatch(updateUserRequest());
         axios.post(`${ROOT_URL}/auth/facebook`, 
