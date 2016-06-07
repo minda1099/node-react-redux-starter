@@ -10,9 +10,11 @@ module.exports = (express, app, mongoose, expressConfig) => {
   if(process.env.NODE_ENV !== 'production'){
     const compiler = webpack(webpackConfig); 
   
-    app.use(webpackDevMiddleware(compiler, {  
+    app.use(webpackDevMiddleware(compiler, {
+        hot: true,
+        historyApiFallback: true,
         publicPath: webpackConfig.output.publicPath,  
-        stats: {colors: true}  
+        stats: {colors: true},
     }));
   
     app.use(webpackHotMiddleware(compiler, {  

@@ -20,11 +20,6 @@ class Register extends Component {
         let { email, password } = this.props.fields;
         this.props.registerUser(email.value, password.value);
     }
-    componentWillMount() {
-        if(this.props.auth.isAuthenticated){//redirect to home if already auth'd
-            this.context.router.push('/');
-        }
-    }
     
     render() {
         const { fields: { email, password }, handleSubmit, auth } = this.props;

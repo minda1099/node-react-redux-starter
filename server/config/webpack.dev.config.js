@@ -6,8 +6,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 module.exports = {
   devtool: 'eval',
   entry: [
-    'webpack/hot/dev-server',
-    'webpack-hot-middleware/client',
+    `webpack-hot-middleware/client?reload=true&https://${ process.env.IP }:${ process.env.PORT }`,
     './app/app.js',
   ],
   output: {
@@ -33,7 +32,9 @@ module.exports = {
         'NODE_ENV': JSON.stringify('development'),
       },
     }),
+    new webpack.optimize.OccurenceOrderPlugin(),
     new webpack.HotModuleReplacementPlugin(),
+    new webpack.NoErrorsPlugin(),
     new ExtractTextPlugin('styles.css'),
     new HtmlWebpackPlugin({
       filename: 'index.html',
