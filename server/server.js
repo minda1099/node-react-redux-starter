@@ -1,7 +1,6 @@
 'use strict';
 // DEPENDENCIES
 const express = require('express');
-const errorHandler = require('errorhandler');
 const mongoose = require('mongoose');
 
 //CREATE EXPRESS SERVER
@@ -35,7 +34,23 @@ require('./config/express.config')(express, app, mongoose, config);
 //IMPORT CUSTOM MODULES
 require('./modules')(express, app, mongoose, config, utils);
 
-app.use(errorHandler()); //ERROR HANDLING
+
+// Middleware error handler 
+app.use((err,req,res,next) => {
+  console.error(err);
+
+  const output = {
+      error: {
+        name: err.name,
+        message: err.message,
+        text: err.toString(),
+        success: false,
+      },
+  };
+  const statusCode = err.status || 500;
+
+  res.status(statusCode).json(output);
+});
 
 //RUN EXPRESS SERVER
 app.listen(app.get('port'), () => {

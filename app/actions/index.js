@@ -27,12 +27,13 @@ export function updateUserSuccess({ token, message, success, }) {
 }
 
 export function updateUserFailure(error) {
+  
   return {
     type: UPDATE_USER_FAILURE,
     payload: {
       status: error.status,
-      statusText: error.data.error,
-      success: error.data.success,
+      statusText: error.data.error.message,
+      success: error.data.error.success,
     },
   };
 }
