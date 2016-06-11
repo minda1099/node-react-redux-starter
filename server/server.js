@@ -1,4 +1,7 @@
-'use strict';
+if(+process.versions.node.split('.')[0] < 6){
+  throw 'NODE VERSION MUST BE GREATER THAN OR EQUAL TO 6. CURRENT VERSION: ' + process.versions.node;
+}
+
 // DEPENDENCIES
 const express = require('express');
 const mongoose = require('mongoose');
@@ -40,12 +43,10 @@ app.use((err,req,res,next) => {
   console.error(err);
 
   const output = {
-      error: {
-        name: err.name,
-        message: err.message,
-        text: err.toString(),
-        success: false,
-      },
+    name: err.name,
+    message: err.message,
+    text: err.toString(),
+    success: false,
   };
   const statusCode = err.status || 500;
 
