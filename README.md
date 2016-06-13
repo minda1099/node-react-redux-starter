@@ -3,22 +3,22 @@
 This is currently work in progress. 
 
 ### TO-DO List NODE
-*  Refactor callback hell for auth
+*  Refactor callback hell for auth (w/ async await)
 *  Disconnect Social Accounts
 *  Twitter Auth
 *  Password Reset Email
 *  Mandrill Intergration
 *  Basic security: helmet + lusca 
-*  Testing framework
+*  Setup Testing framework
 
 ### TO-DO List REACT + Redux
-*  React Helmet: https://github.com/nfl/react-helmet
-*  Add icons to auth
+*  Add icons to auth buttons
 *  CssLinter
 *  Twitter auth
 *  Disconnect Social Accounts
-*  Improve Error / Success Message Settings Containter
-*  Testing framework
+*  migrate from redux thunk to redux saga
+*  restructure to be more modular
+*  Setup Testing framework
 *  Server-side rendering(universal)
 
 ### NPM Scripts

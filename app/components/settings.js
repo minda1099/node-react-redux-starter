@@ -10,15 +10,15 @@ class Settings extends Component {
     };
   }
   handleErrors(errors) {
-    console.log(errors);
     this.setState({
       errors,
     });
   }
   render() {
     return (
-      <div className="col-md-6 offset-md-3 col-sm-12 margin-top-50 ">
-        <h2> User Settings </h2>
+      <div className="col-md-6 offset-md-3 col-sm-12">
+        <div className="m-a-1">
+        <h2>User Settings</h2>
         <UpdateEmailForm  
           errorHanlder={this.handleErrors.bind(this)}
         />
@@ -31,6 +31,7 @@ class Settings extends Component {
           errorHanlder={this.handleErrors.bind(this)}
         />
         <StatusHandler errors={this.state.errors} />
+        </div>
       </div>
     );
   }

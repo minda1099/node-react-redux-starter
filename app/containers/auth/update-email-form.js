@@ -35,7 +35,7 @@ class UpdateEmailForm extends Component {
           <input type="password" className="form-control" {...password}/>
         </fieldset>
         <div className="btn-toolbar">
-          <button type="submit" className={`btn btn-primary ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Save'} </button>
+          <button type="submit" className={`btn btn-success ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Save'} </button>
         </div>
       </div>
     );

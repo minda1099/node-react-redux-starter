@@ -6,7 +6,7 @@ import { push } from 'react-router-redux';
 
 import { checkHttpStatus, } from '../utils';
 
-const ROOT_URL = 'https://node-starter-th3legend.c9users.io/api';
+const ROOT_URL = '/api';
 
 export function updateUserRequest() {
   return {

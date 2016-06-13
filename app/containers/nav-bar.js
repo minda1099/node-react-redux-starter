@@ -38,7 +38,7 @@ class Nav extends Component {
   render() {
     return (
       <nav className="navbar navbar-dark bg-primary">
-        <Link to="/" className="navbar-brand" >React Redux Node</Link>
+        <Link to="/" className="navbar-brand" >Starter</Link>
         { this.props.auth.isAuthenticated ? this.renderLoggedIn() : this.renderLoggedOut() }
       </nav>
     );

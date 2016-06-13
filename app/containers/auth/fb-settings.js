@@ -19,7 +19,7 @@ class FbSettings extends Component {
         appId="1559504071030678"
         autoLoad={false}
         callback={this.props.fbLogin}
-        cssClass="btn btn-primary"
+        cssClass="btn btn-primary btn-auth-settings"
         fields={'email'}
         textButton="Connect to Facebook"
       />
@@ -28,7 +28,7 @@ class FbSettings extends Component {
   renderFbDsct(){
     const { hasPass } = this.props.auth;
     return (
-      <button className={`btn btn-primary ${hasPass ?  '' : 'disabled' }`} >
+      <button className={`btn btn-primary btn-auth-settings ${hasPass ?  '' : 'disabled' }`} >
         {hasPass ?  'Disconnect from Facebook' : 'Add password to disconnect' }  
       </button>
     );

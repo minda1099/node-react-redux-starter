@@ -19,14 +19,14 @@ class GoogSettings extends Component {
         clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
         callback={this.props.gLogin}
         offline={true}
-        cssClass="btn btn-danger "
+        cssClass="btn btn-danger btn-auth-settings"
       />
     );
   }
   renderGoogDsct(){
     const { hasPass } = this.props.auth;
     return (
-      <button className={`btn btn-danger  ${hasPass ?  '' : 'disabled' }`} >
+      <button className={`btn btn-danger btn-auth-settings ${hasPass ?  '' : 'disabled' }`} >
         {hasPass ?  'Disconnect from Google' : 'Add password to disconnect' }  
       </button>
     );
