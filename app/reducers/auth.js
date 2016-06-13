@@ -1,5 +1,5 @@
 import { 
-  UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, LOGOUT_USER,
+  UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, LOGOUT_USER, CLEAR_USER_STATUS,
 } from '../constants';
 import jwtDecode from 'jwt-decode';
 
@@ -30,19 +30,26 @@ export default function(state = INITIAL_STATE, action) {
         'isUpdating': false,
         'isAuthenticated': true,
         'token': action.payload.token,
-          'email': jwtDecode(action.payload.token).email,
-          'hasPass': jwtDecode(action.payload.token).hasPass,
-          'statusText': action.payload.statusText,
-          'success': action.payload.success,
-          'hasFb': jwtDecode(action.payload.token).hasFb,
-          'hasGoog': jwtDecode(action.payload.token).hasGoog,
+        'email': jwtDecode(action.payload.token).email,
+        'hasPass': jwtDecode(action.payload.token).hasPass,
+        'statusText': action.payload.statusText,
+        'success': action.payload.success,
+        'hasFb': jwtDecode(action.payload.token).hasFb,
+        'hasGoog': jwtDecode(action.payload.token).hasGoog,
       };
     case UPDATE_USER_FAILURE:
       return {
         ...state, //take current state
         'isUpdating': false,
         'statusText': action.payload.statusText,
-          'success': action.payload.success,
+        'success': action.payload.success,
+      };
+    case CLEAR_USER_STATUS:
+      return {
+        ...state, //take current state
+        'isUpdating': false,
+        'statusText': null,
+        'success': null,
       };
     case LOGOUT_USER:
       return {

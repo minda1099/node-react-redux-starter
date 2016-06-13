@@ -3,85 +3,96 @@ import { reduxForm } from 'redux-form';
 import { bindActionCreators } from 'redux';
 import FacebookLogin from 'react-facebook-login';
 import GoogleLogin from 'react-google-login';
-import { push } from 'react-router-redux';
 
-import { loginUser, fbLogin, gLogin } from '../../actions';
+import { loginUser, fbLogin, gLogin, clearUserStatus } from '../../actions';
+import StatusHandler from './status-handler';
 
 class Login extends Component {
-
-  constructor(props){
+  static contextTypes = {
+    loginUser: PropTypes.func,
+    fbLogin: PropTypes.func,
+    gLogin: PropTypes.func,
+    clearUserStatus: PropTypes.func,
+    fields: PropTypes.object,
+    handleSubmit: PropTypes.func,
+    auth: PropTypes.object,
+  };
+  constructor(props) {
     super(props);
-        
     this.state = { error: '' };
   }
-  onSubmit(props){
+  componentWillMount() {
+    this.props.clearUserStatus();
+  }
+  onSubmit(props) {
     const { email, password } = this.props.fields;
     this.props.loginUser(email.value, password.value);
   }
-    
+  onKeyPress(event) {
+    this.props.clearUserStatus();
+    if (event.which == 13 || event.keyCode == 13) { // Enter
+      this.onSubmit(this.props);
+    }
+  }
   render() {
     const { fields: { email, password }, handleSubmit, auth } = this.props;
     return (
       <div className="col-md-6 offset-md-3 col-sm-12 margin-top-50 ">
-        <form onSubmit={handleSubmit(this.onSubmit.bind(this))}>
-          <h2 className="text-md-center"> LOGIN </h2>
-          <div className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
+        <form>
+          <h2 className="text-xs-center"> LOGIN </h2>
+          <fieldset className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
             <label> Email </label>
-            <input type="email" className="form-control" {...email} />
-            <div className="text-help">
-              {email.touched ? email.error : ''}
-            </div>
-          </div>
-          <div className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
+            <input onKeyPress={this.onKeyPress.bind(this)} type="email" className="form-control" {...email} />
+          </fieldset>
+          <fieldset className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
             <label> Password </label>
-            <input type="password" className="form-control" { ...password }/>
-            <div className="text-help">
-              { password.touched ? password.error : '' }
-            </div>
-          </div>
-          <div className='form-group has-danger'>
-            <small className="text-muted text-help ">
-              {auth.statusText}
-            </small>
-          </div>
-          <hr/>
-          <div className="btn-toolbar container">
-            <button type="submit" className={ `btn btn-success btn-inline  btn-auth ${ auth.isUpdating ? 'disabled' : ''  }` }> {auth.isUpdating ? 'loading...' : 'Login'} </button>
-            <FacebookLogin
-              appId="1559504071030678"
-              autoLoad={false}
-              callback={this.props.fbLogin}
-              cssClass="btn btn-primary btn-inline btn-auth"
-              textButton="Facebook"
-              fields={'email'}
-            />
-            <GoogleLogin
-              clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
-              callback={this.props.gLogin}
-              offline={true}
-              cssClass="btn btn-danger btn-inline btn-auth"
-              buttonText="Google"
-            />
-          </div>
+            <input onKeyPress={this.onKeyPress.bind(this)} type="password" className="form-control" { ...password }/>
+          </fieldset>
         </form>
+        <hr/>
+        <div className="btn-toolbar m-a-1">
+          <button 
+            onClick={handleSubmit(this.onSubmit.bind(this))} 
+            className={`btn btn-success btn-inline  btn-auth ${auth.isUpdating ? 'disabled' : ''}`}
+          >
+            {auth.isUpdating ? 'loading...' : 'Login'}
+          </button>
+          <FacebookLogin
+            appId="1559504071030678"
+            autoLoad={false}
+            callback={this.props.fbLogin}
+            cssClass={`btn btn-primary btn-inline btn-auth ${auth.isUpdating ? 'disabled' : ''}`}
+            textButton="Facebook"
+            fields={'email'}
+          />
+          <GoogleLogin
+            clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
+            callback={this.props.gLogin}
+            offline={true}
+            cssClass={`btn btn-danger btn-inline btn-auth ${auth.isUpdating ? 'disabled' : ''}`}
+            buttonText="Google"
+          />
+        </div>
+        <StatusHandler errors={[(email.error && email.touched ? email.error : null), (password.error && password.touched ? password.error : null)]} /> 
       </div>
     );
   }
 }
 
-function mapDispatchToProps(dispatch){
+const mapDispatchToProps = (dispatch) => {
   return bindActionCreators({ 
     loginUser, 
     fbLogin, 
     gLogin,
+    clearUserStatus,
   }, dispatch);
-}
+};
 
-function mapStateToProps(state) {
+const mapStateToProps = (state) => {
   return { 
     auth: state.auth,
   };
-}
+};
 
 function validate({ email, password, }) {
   const errors = {};
@@ -99,7 +110,7 @@ function validate({ email, password, }) {
 }
 
 export default reduxForm({
-    form: 'login',
-    fields: ['email', 'password',],
-    validate,
-},mapStateToProps, mapDispatchToProps)(Login);
+  form: 'login',
+  fields: ['email', 'password',],
+  validate,
+}, mapStateToProps, mapDispatchToProps)(Login);

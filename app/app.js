@@ -13,13 +13,13 @@ const rootComponent = (
   <Root store={store} />
 );
 
-let token = localStorage.getItem('token');
-let data = {
-  token: token,
+const token = localStorage.getItem('token');
+const data = {
   success: true,
-  message: null
+  message: null,
+  token,
 };
-if (token !== null) {
+if (token) {
   store.dispatch(updateUserSuccess(data));
 }
 

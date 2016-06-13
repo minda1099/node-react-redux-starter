@@ -1,24 +1,25 @@
 # Simple Node + React Redux Starter
 
-This is currently work in progress.  End goal is to create a starter pack with all the tooling
-to quickly build a React Redux web app.
+This is currently work in progress. 
 
 ### TO-DO List NODE
-*  Refactor callback hell
+*  Refactor callback hell for auth
 *  Disconnect Social Accounts
 *  Twitter Auth
 *  Password Reset Email
 *  Mandrill Intergration
 *  Basic security: helmet + lusca 
-*  Csslint
 *  Testing framework
 
 ### TO-DO List REACT + Redux
 *  React Helmet: https://github.com/nfl/react-helmet
+*  Add icons to auth
+*  CssLinter
 *  Twitter auth
 *  Disconnect Social Accounts
-*  Error / Success Message Settings Containter
+*  Improve Error / Success Message Settings Containter
 *  Testing framework
+*  Server-side rendering(universal)
 
 ### NPM Scripts
 
