@@ -12,6 +12,8 @@ class AddPassForm extends Component {
   };
   constructor(props){
     super(props);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.state = {
       showForm: false,
     };
@@ -33,9 +35,9 @@ class AddPassForm extends Component {
     const { fields: { newPassword, newPassword2 }, handleSubmit, auth } = this.props;
     return (
       <form 
-        onChange={this.onChange.bind(this)} 
-        onBlur={this.onChange.bind(this)} 
-        onSubmit={handleSubmit(this.onSubmit.bind(this))}
+        onChange={this.onChange} 
+        onBlur={this.onChange} 
+        onSubmit={handleSubmit(this.onSubmit)}
       >
         <fieldset className={`form-group ${newPassword.touched && newPassword.invalid ? 'has-danger' : ''}`}>
           <label> New Password </label>
@@ -54,7 +56,7 @@ class AddPassForm extends Component {
   render() {
     return (
       <div className="m-a-1">
-        { this.props.auth.hasPass ? '' : this.renderAddPass() }
+        { this.props.auth.get('hasPass') ? '' : this.renderAddPass() }
       </div>
     );
   }

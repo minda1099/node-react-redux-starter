@@ -10,7 +10,9 @@ class statusHandler extends Component {
     super(props);
   }
   render() {
-    const { auth: { statusText, success }, errors } = this.props;
+    const { auth, errors } = this.props;
+    const statusText = auth.get('statusText');
+    const success = auth.get('success');
     if (success) {
       return (
         <div className='alert alert-success m-a-1'>

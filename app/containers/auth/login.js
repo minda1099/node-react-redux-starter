@@ -19,6 +19,8 @@ class Login extends Component {
   };
   constructor(props) {
     super(props);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
     this.state = { error: '' };
   }
   componentWillMount() {
@@ -42,17 +44,17 @@ class Login extends Component {
           <h2 className="text-xs-center"> LOGIN </h2>
           <fieldset className={`form-group ${email.touched && email.invalid ? 'has-danger' : ''}`}>
             <label> Email </label>
-            <input onKeyPress={this.onKeyPress.bind(this)} type="email" className="form-control" {...email} />
+            <input onKeyPress={this.onKeyPress} type="email" className="form-control" {...email} />
           </fieldset>
           <fieldset className={`form-group ${password.touched && password.invalid ? 'has-danger' : ''}`}>
             <label> Password </label>
-            <input onKeyPress={this.onKeyPress.bind(this)} type="password" className="form-control" { ...password }/>
+            <input onKeyPress={this.onKeyPress} type="password" className="form-control" { ...password }/>
           </fieldset>
         </form>
         <StatusHandler errors={[(email.error && email.touched ? email.error : null), (password.error && password.touched ? password.error : null)]} /> 
         <hr/>
         <button
-          onClick={handleSubmit(this.onSubmit.bind(this))} 
+          onClick={handleSubmit(this.onSubmit)} 
           className={`btn btn-success btn-auth ${auth.isUpdating ? 'disabled' : ''}` }
         > 
           {auth.isUpdating ? 'Loading...' : 'Login'}
@@ -92,7 +94,7 @@ const mapStateToProps = (state) => {
   };
 };
 
-function validate({ email, password, }) {
+function validate({ email, password }) {
   const errors = {};
   if (!email) {
     errors.email = 'Enter an email address';

@@ -1,4 +1,3 @@
 // Higher Order Components
-
-export RequireAuth from './require_auth';
-export RequireAnon from './require_anon';
+export RequireAuth from './require-auth';
+export RequireAnon from './require-anon';

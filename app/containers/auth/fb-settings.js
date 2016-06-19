@@ -26,7 +26,7 @@ class FbSettings extends Component {
     );
   }
   renderFbDsct(){
-    const { hasPass } = this.props.auth;
+    const hasPass = this.props.auth.get('hasPass');
     return (
       <button className={`btn btn-primary btn-auth-settings ${hasPass ?  '' : 'disabled' }`} >
         {hasPass ?  'Disconnect from Facebook' : 'Add password to disconnect' }  
@@ -34,7 +34,7 @@ class FbSettings extends Component {
     );
   }
   render() {
-    const { hasFb } = this.props.auth;
+    const hasFb = this.props.auth.get('hasFb');
     return (
       <div className="m-a-1">
         { hasFb ? this.renderFbDsct() : this.renderFbCnct() }

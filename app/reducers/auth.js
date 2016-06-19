@@ -1,9 +1,8 @@
-import { 
-  UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, LOGOUT_USER, CLEAR_USER_STATUS,
-} from '../constants';
+import * as types from '../constants';
 import jwtDecode from 'jwt-decode';
+import { Map } from 'immutable';  
 
-const INITIAL_STATE = {
+const INITIAL_STATE = Map({ 
   token: null,
   email: null,
   hasPass: false,
@@ -12,58 +11,49 @@ const INITIAL_STATE = {
   statusText: null,
   success: null,
   hasFb: false,
-  hasGoog: false
-};
-
+  hasGoog: false,
+});
 
 export default function(state = INITIAL_STATE, action) {
   switch (action.type) {
-    case UPDATE_USER_REQUEST:
-      return {
-        ...state, //take current state
-        'isUpdating': true,
-        'statusText': null,
-      };
-    case UPDATE_USER_SUCCESS:
-      return {
-        ...state, //take current state
-        'isUpdating': false,
-        'isAuthenticated': true,
-        'token': action.payload.token,
-        'email': jwtDecode(action.payload.token).email,
-        'hasPass': jwtDecode(action.payload.token).hasPass,
-        'statusText': action.payload.statusText,
-        'success': action.payload.success,
-        'hasFb': jwtDecode(action.payload.token).hasFb,
-        'hasGoog': jwtDecode(action.payload.token).hasGoog,
-      };
-    case UPDATE_USER_FAILURE:
-      return {
-        ...state, //take current state
-        'isUpdating': false,
-        'statusText': action.payload.statusText,
-        'success': action.payload.success,
-      };
-    case CLEAR_USER_STATUS:
-      return {
-        ...state, //take current state
-        'isUpdating': false,
-        'statusText': null,
-        'success': null,
-      };
-    case LOGOUT_USER:
-      return {
-        ...state, //take current state
-        'isAuthenticated': false,
-        'isUpdating': false,
-        'token': null,
-        'email': null,
-        'hasPass': null,
-        'statusText': null,
-        'success': null,
-        'hasFb': false,
-        'hasGoog': false,
-      };
+    case types.UPDATE_USER_REQUEST:
+      return state
+        .set('isUpdating', true)
+        .set('statusText', null);
+    case types.UPDATE_USER_SUCCESS:
+      const { token, statusText, success } = action.payload;
+      const { email, hasPass, hasFb, hasGoog } = jwtDecode(token);
+      return state
+        .set('isUpdating', false)
+        .set('isAuthenticated', true)
+        .set('token', token)
+        .set('email', email)
+        .set('hasPass', hasPass)
+        .set('statusText', statusText)
+        .set('success', success)
+        .set('hasFb', hasFb)
+        .set('hasGoog', hasGoog);
+    case types.UPDATE_USER_FAILURE:
+      return state
+        .set('isUpdating', false)
+        .set('statusText', action.payload.statusText)
+        .set('success', action.payload.success);
+    case types.CLEAR_USER_STATUS:
+      return state
+        .set('isUpdating', false)
+        .set('statusText', null)
+        .set('success', null);
+    case types.LOGOUT_USER:
+      return state
+        .set('isUpdating', false)
+        .set('isAuthenticated', false)
+        .set('token', null)
+        .set('email', null)
+        .set('hasPass', null)
+        .set('statusText', null)
+        .set('success', null)
+        .set('hasFb', false)
+        .set('hasGoog', false);
     default:
       return state;
   }

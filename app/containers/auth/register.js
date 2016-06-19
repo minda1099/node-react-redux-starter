@@ -19,6 +19,8 @@ class Register extends Component {
   };
   constructor(props){
     super(props);
+    this.onKeyPress = this.onKeyPress.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
   componentWillMount(){
     this.props.clearUserStatus();
@@ -35,43 +37,44 @@ class Register extends Component {
   }
   render() {
     const { fields: { email, password, password2 }, handleSubmit, auth } = this.props;
+    const isUpdating = auth.get('isUpdating');
     return (
       <div className="col-md-8 offset-md-2 col-sm-12">
         <form className="m-a-1">
           <h2 className="text-xs-center"> REGISTER </h2>
           <fieldset className={ `form-group ${ email.touched && email.invalid ? 'has-danger' : '' }` }>
             <label> Email: </label>
-            <input onKeyPress={this.onKeyPress.bind(this)} type="email" className="form-control" {...email} required autofocus/>
+            <input onKeyPress={ this.onKeyPress } type="email" className="form-control" {...email} required autofocus/>
           </fieldset>
           <fieldset className={ `form-group ${ password.touched && password.invalid ? 'has-danger' : '' }` }>
             <label> Password: </label>
-            <input onKeyPress={ this.onKeyPress.bind(this) } type="password" className="form-control" {...password} required/>
+            <input onKeyPress={ this.onKeyPress } type="password" className="form-control" {...password} required/>
           </fieldset>
           <fieldset className={ `form-group ${ password2.touched && password2.invalid ? 'has-danger' : '' }` }>
             <label> Confirm Password: </label>
-            <input onKeyPress={ this.onKeyPress.bind(this) } type="password" className="form-control" {...password2} required/>
+            <input onKeyPress={ this.onKeyPress } type="password" className="form-control" {...password2} required/>
           </fieldset>
         </form>
         <StatusHandler errors={[(email.error && email.touched ? email.error : null), (password.error && password.touched ? password.error : null), (password2.error && password2.touched ? password2.error : null)]} />
         <hr/>
         <button
-          onClick={handleSubmit(this.onSubmit.bind(this))} 
-          className={`btn btn-success btn-auth ${auth.isUpdating ? 'disabled' : ''}` }
+          onClick={handleSubmit(this.onSubmit)} 
+          className={`btn btn-success btn-auth ${isUpdating ? 'disabled' : ''}` }
         > 
-          {auth.isUpdating ? 'Loading...' : 'Register'}
+          {isUpdating ? 'Loading...' : 'Register'}
         </button>
         <GoogleLogin
           clientId={'658977310896-knrl3gka66fldh83dao2rhgbblmd4un9.apps.googleusercontent.com'}
           callback={this.props.gLogin}
           offline={true}
-          cssClass={`btn btn-danger btn-auth ${auth.isUpdating ? 'disabled' : ''}`}
+          cssClass={`btn btn-danger btn-auth ${isUpdating ? 'disabled' : ''}`}
           buttonText="Google"
         />
         <FacebookLogin
           appId="1559504071030678"
           autoLoad={false}
           callback={this.props.fbLogin}
-          cssClass={`btn btn-primary btn-auth ${auth.isUpdating ? 'disabled' : ''}`}
+          cssClass={`btn btn-primary btn-auth ${isUpdating ? 'disabled' : ''}`}
           textButton="Facebook"
           fields={'email'}
         />

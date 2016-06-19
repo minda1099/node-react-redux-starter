@@ -1,8 +1,8 @@
 import React from 'react';
-import { Route, IndexRoute, } from 'react-router';
-import  { Main, Register, Login, } from '../containers';
-import { Welcome, Settings, } from '../components';
-import { RequireAuth, RequireAnon, } from '../hoc';
+import { Route, IndexRoute } from 'react-router';
+import  { Main, Register, Login } from '../containers';
+import { Welcome, Settings } from '../components';
+import { RequireAuth, RequireAnon } from '../hoc';
 
 export default(
   <Route path='/' component={ Main } >

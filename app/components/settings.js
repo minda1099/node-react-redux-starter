@@ -5,6 +5,7 @@ import { UpdateEmailForm, UpdatePassForm, FbSettings, GoogSettings, AddPassForm,
 class Settings extends Component {
   constructor(props) {
     super(props);
+    this.handleErrors = this.handleErrors.bind(this);
     this.state ={
       errors: [],
     };
@@ -20,15 +21,15 @@ class Settings extends Component {
         <div className="m-a-1">
         <h2>User Settings</h2>
         <UpdateEmailForm  
-          errorHanlder={this.handleErrors.bind(this)}
+          errorHanlder={this.handleErrors}
         />
         <UpdatePassForm 
-          errorHanlder={this.handleErrors.bind(this)}
+          errorHanlder={this.handleErrors}
         />
         <FbSettings />
         <GoogSettings />
         <AddPassForm 
-          errorHanlder={this.handleErrors.bind(this)}
+          errorHanlder={this.handleErrors}
         />
         <StatusHandler errors={this.state.errors} />
         </div>

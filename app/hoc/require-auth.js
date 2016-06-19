@@ -5,12 +5,12 @@ import { push } from 'react-router-redux';
 export default function(ComposedComponent, pushTo) {
   class isAnon extends Component {
     componentWillMount() {
-      if(!this.props.auth.isAuthenticated){
+      if(!this.props.auth.get('isAuthenticated')){
         this.props.dispatch(push(pushTo ? pushTo : '/'));
       }
     }
     componentWillUpdate(nextProps){
-      if(!nextProps.auth.isAuthenticated){
+      if(!nextProps.auth.get('isAuthenticated')){
         this.props.dispatch(push(pushTo ? pushTo : '/'));
       }
     }
@@ -20,7 +20,7 @@ export default function(ComposedComponent, pushTo) {
   }
   
   function mapStateToProps(state){
-    return { auth: state.auth, };
+    return { auth: state.auth };
   }
   
   return connect(mapStateToProps)(isAnon);

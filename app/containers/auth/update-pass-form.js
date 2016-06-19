@@ -12,13 +12,16 @@ class UpdatePassForm extends Component {
   };
   constructor(props) {
     super(props);
+    this.onChange = this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
+    this.toggleForm = this.toggleForm.bind(this);
     this.state = {
       showForm: false,
     };
   }
   componentWillMount() {
     this.props.clearUserStatus();
-    if(this.props.auth.status){
+    if(this.props.auth.get('status')){
       this.setState({
         showForm: false,
       });
@@ -43,9 +46,9 @@ class UpdatePassForm extends Component {
     const { fields: { oldPassword, newPassword, newPassword2 }, handleSubmit, auth } = this.props;
     return (
       <form 
-        onChange={this.onChange.bind(this)} 
-        onBlur={this.onChange.bind(this)} 
-        onSubmit={handleSubmit(this.onSubmit.bind(this))}
+        onChange={this.onChange} 
+        onBlur={this.onChange} 
+        onSubmit={handleSubmit(this.onSubmit)}
       >
         <div className={`form-group ${oldPassword.touched && oldPassword.invalid ? 'has-danger' : ''}`}>
           <label> Current Password </label>
@@ -68,7 +71,7 @@ class UpdatePassForm extends Component {
   renderHasPass(){
     return (
       <div>
-        <span className="react-link react-link-underline" onClick={this.toggleForm.bind(this)}> 
+        <span className="react-link react-link-underline" onClick={this.toggleForm}> 
           {this.state.showForm ? 'Hide Password Update' : 'Update Password'} 
         </span>
         {this.state.showForm ? this.renderUpdatePass() : ''}
@@ -78,7 +81,7 @@ class UpdatePassForm extends Component {
   render() {
     return (
       <div className="m-a-1">
-        {this.props.auth.hasPass ? this.renderHasPass() : ''} 
+        {this.props.auth.get('hasPass') ? this.renderHasPass() : ''} 
       </div>
     );
   }

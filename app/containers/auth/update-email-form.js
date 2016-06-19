@@ -13,6 +13,8 @@ class UpdateEmailForm extends Component {
   };
   constructor(props){
     super(props);
+    this.onChange =this.onChange.bind(this);
+    this.onSubmit = this.onSubmit.bind(this);
   }
   componentWillMount() {
     this.props.clearUserStatus();
@@ -45,9 +47,9 @@ class UpdateEmailForm extends Component {
     return (
       <form
         className="m-a-1"
-        onChange={this.onChange.bind(this)} 
-        onBlur={this.onChange.bind(this)} 
-        onSubmit={handleSubmit(this.onSubmit.bind(this))}
+        onChange={this.onChange} 
+        onBlur={this.onChange} 
+        onSubmit={handleSubmit(this.onSubmit)}
       >
         <fieldset className={`form-group ${newEmail.touched && newEmail.invalid ? 'has-danger' : ''}`}>
           <label> Update Email </label>

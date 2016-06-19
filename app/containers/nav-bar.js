@@ -39,7 +39,7 @@ class Nav extends Component {
     return (
       <nav className="navbar navbar-dark bg-primary">
         <Link to="/" className="navbar-brand" >Starter</Link>
-        { this.props.auth.isAuthenticated ? this.renderLoggedIn() : this.renderLoggedOut() }
+        { this.props.auth.get('isAuthenticated') ? this.renderLoggedIn() : this.renderLoggedOut() }
       </nav>
     );
   }

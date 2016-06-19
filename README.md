@@ -12,13 +12,13 @@ This is currently work in progress.
 *  Setup Testing framework
 
 ### TO-DO List REACT + Redux
+*  Restructure to be more modular
+*  Migrate from redux thunk to redux saga
+*  Setup Testing framework
 *  Add icons to auth buttons
 *  CssLinter
 *  Twitter auth
 *  Disconnect Social Accounts
-*  migrate from redux thunk to redux saga
-*  restructure to be more modular
-*  Setup Testing framework
 *  Server-side rendering(universal)
 
 ### NPM Scripts

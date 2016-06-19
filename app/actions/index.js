@@ -1,23 +1,23 @@
-import { UPDATE_USER_REQUEST, UPDATE_USER_SUCCESS, UPDATE_USER_FAILURE, LOGOUT_USER, CLEAR_USER_STATUS } from '../constants';
+import * as types from '../constants';
 
 import axios from 'axios';
 import jwtDecode from 'jwt-decode';
 import { push } from 'react-router-redux';
 
-import { checkHttpStatus, } from '../utils';
+import { checkHttpStatus } from '../utils';
 
 const ROOT_URL = '/api';
 
 export function updateUserRequest() {
   return {
-    type: UPDATE_USER_REQUEST,
+    type: types.UPDATE_USER_REQUEST,
   };
 }
 
-export function updateUserSuccess({ token, message, success, }) {
+export function updateUserSuccess({ token, message, success }) {
   localStorage.setItem('token', token);
   return {
-    type: UPDATE_USER_SUCCESS,
+    type: types.UPDATE_USER_SUCCESS,
     payload: {
       statusText: message,
       token,
@@ -28,7 +28,7 @@ export function updateUserSuccess({ token, message, success, }) {
 
 export function updateUserFailure(error) {
   return {
-    type: UPDATE_USER_FAILURE,
+    type: types.UPDATE_USER_FAILURE,
     payload: {
       statusText: error.data.message,
       success: error.data.success,
@@ -38,12 +38,9 @@ export function updateUserFailure(error) {
 
 export function clearUserStatus() {
   return {
-    type: CLEAR_USER_STATUS,
+    type: types.CLEAR_USER_STATUS,
   };
 }
-
-
-
 
 export function registerUser(email, password) {
   return function(dispatch) {
@@ -103,7 +100,7 @@ export function loginUser(email, password) {
   };
 }
 
-export function fbLogin({ email, id, accessToken, }) {
+export function fbLogin({ email, id, accessToken }) {
   return function(dispatch) {
     dispatch(updateUserRequest());
     axios.post(`${ROOT_URL}/auth/facebook`, {
@@ -135,7 +132,6 @@ export function fbLogin({ email, id, accessToken, }) {
 }
 
 export function gLogin({ code }) {
-  
   return function(dispatch) {
     dispatch(updateUserRequest());
     axios.post(`${ROOT_URL}/auth/google`, {
@@ -163,7 +159,6 @@ export function gLogin({ code }) {
     });
   };
 }
-
 
 export function updateEmail(newEmail, password) {
   return function(dispatch) {
@@ -230,13 +225,12 @@ export function addPassword(newPass) {
       dispatch(updateUserFailure(error));
     });
   };
-
 }
 
 export function logout() {
   localStorage.removeItem('token');
   return {
-    type: LOGOUT_USER
+    type: types.LOGOUT_USER
   };
 }
 

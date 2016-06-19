@@ -24,7 +24,7 @@ class GoogSettings extends Component {
     );
   }
   renderGoogDsct(){
-    const { hasPass } = this.props.auth;
+    const hasPass = this.props.auth.get('hasPass');
     return (
       <button className={`btn btn-danger btn-auth-settings ${hasPass ?  '' : 'disabled' }`} >
         {hasPass ?  'Disconnect from Google' : 'Add password to disconnect' }  
@@ -32,7 +32,7 @@ class GoogSettings extends Component {
     );
   }
   render() {
-    const { hasGoog } = this.props.auth;
+    const hasGoog = this.props.auth.get('hasGoog');
     return (
       <div className="m-a-1">
         { hasGoog ? this.renderGoogDsct() : this.renderGoogCnct() }
