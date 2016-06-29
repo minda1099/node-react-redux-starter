@@ -7,7 +7,12 @@ const webpackDevMiddleware = require('webpack-dev-middleware');
 const webpackHotMiddleware = require('webpack-hot-middleware');
 
 module.exports = (express, app, mongoose, expressConfig) => {
-  if(process.env.NODE_ENV !== 'production'){
+  // SET STATIC FILES
+  app.use(express.static(path.resolve('public'), {
+    maxAge: 31557600000
+  })); 
+  // WEBPACK DEV SERVER SETTINGS
+  if(!app.get('isProd')){
     const compiler = webpack(webpackConfig); 
   
     app.use(webpackDevMiddleware(compiler, {
@@ -20,13 +25,21 @@ module.exports = (express, app, mongoose, expressConfig) => {
     app.use(webpackHotMiddleware(compiler, {  
       log: console.log 
     }));
+    
+    // CATCH ALL ROUTING FOR HtmlWebpackPlugin
+    app.use('*', function (req, res, next) {
+      var filename = path.join(compiler.outputPath,'index.html');
+      compiler.outputFileSystem.readFile(filename, function(err, result){
+        if (err) {
+          return next(err);
+        }
+        res.set('content-type','text/html');
+        res.send(result);
+        res.end();
+      });
+    });
+  } else {
+    // PROD CORE ROUTING
+    require('./core.routes.js')(express, app, expressConfig);
   }
-  app.use(express.static(path.resolve('public'), {
-    maxAge: 31557600000
-  })); //Set static files/ public files direct
-  app.set('views', path.resolve('public')); //Set views directory
-  app.engine('html', require('hogan-express')); //Set template engine to hogan-express
-  app.set('view engine', 'html'); //Set template engine
-
-  require('./core.routes.js')(express, app, expressConfig); //core routes
 };

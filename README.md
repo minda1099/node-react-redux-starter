@@ -1,5 +1,7 @@
 # Simple Node + React Redux Starter
 
+## DEMO: http://reactstarter.founderstack.io/
+
 This is currently work in progress. 
 
 ### TO-DO List NODE
@@ -16,7 +18,7 @@ This is currently work in progress.
 *  Migrate from redux thunk to redux saga
 *  Setup Testing framework
 *  Add icons to auth buttons
-*  CssLinter
+*  CssLinter: https://www.smashingmagazine.com/2016/05/stylelint-the-style-sheet-linter-weve-always-wanted/
 *  Twitter auth
 *  Disconnect Social Accounts
 *  Server-side rendering(universal)
