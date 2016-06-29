@@ -45,5 +45,16 @@ module.exports = {
     contentBase: path.resolve('public'),
     historyApiFallback: true,
     compress: false,
-  }
+  },
+  resolve: {
+    modulesDirectories: [
+      'app',
+      'node_modules',
+    ],
+    alias: {
+      'helpers': path.join(__dirname, '../../tests/helpers/'),
+      'app': path.join(__dirname, '../../app/'),
+      'components': path.join(__dirname, '../../app/components/'),
+    },
+  },
 };

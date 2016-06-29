@@ -40,4 +40,15 @@ module.exports = {
     new webpack.optimize.UglifyJsPlugin(),
     new webpack.optimize.OccurrenceOrderPlugin(),
   ],
+  resolve: {
+    modulesDirectories: [
+      'app',
+      'node_modules',
+    ],
+    alias: {
+      'helpers': path.join(__dirname, '../../tests/helpers/'),
+      'app': path.join(__dirname, '../../app/'),
+      'components': path.join(__dirname, '../../app/components/'),
+    },
+  },
 };
