@@ -13,11 +13,11 @@ module.exports = (config) => {
     files: [
       '../node_modules/phantomjs-polyfill/bind-polyfill.js',
       '../node_modules/es6-promise/dist/es6-promise.js',
-      'tests.webpack.js',
+      'app.glob.tests.js',
     ],
 
     preprocessors: {
-      'tests.webpack.js': ['webpack', 'sourcemap'],
+      'app.glob.tests.js': ['webpack', 'sourcemap'],
     },
 
     reporters: ['mocha'],
@@ -30,7 +30,7 @@ module.exports = (config) => {
       require('karma-sourcemap-loader'),
       require('karma-jquery-chai'),
     ],
-    
+
     webpack: {
       devtool: 'inline-source-map',
       module: {
@@ -53,14 +53,14 @@ module.exports = (config) => {
           'node_modules',
         ],
         alias: {
-          'helpers': path.join(__dirname, '../tests/helpers/'),
-          'app': path.join(__dirname, '../app/'),
+          helpers: path.join(__dirname, '../test/helpers/'),
+          app: path.join(__dirname, '../app/'),
         },
       },
       plugins: [
         new webpack.IgnorePlugin(/\.json$/),
         new webpack.DefinePlugin({
-          __DEVTOOLS__: false, 
+          __DEVTOOLS__: false,
         }),
       ],
     },

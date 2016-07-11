@@ -37,7 +37,7 @@ class UpdateEmailForm extends Component {
           <input type="password" className="form-control" {...password}/>
         </fieldset>
         <div className="btn-toolbar">
-          <button type="submit" className={`btn btn-success ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Save'} </button>
+          <button type="submit" className={`btn btn-success ${auth.get('isUpdating') ? 'disabled' : ''}` }> {auth.get('isUpdating') ? 'loading...' : 'Save'} </button>
         </div>
       </div>
     );
@@ -53,9 +53,9 @@ class UpdateEmailForm extends Component {
       >
         <fieldset className={`form-group ${newEmail.touched && newEmail.invalid ? 'has-danger' : ''}`}>
           <label> Update Email </label>
-          <input type="email" className="form-control" disabled={auth.hasPass ? '' : 'disabled'} {...newEmail} />
+          <input type="email" className="form-control" disabled={auth.get('hasPass') ? '' : 'disabled'} {...newEmail} />
         </fieldset>
-          {(newEmail.touched || newEmail.active) && auth.hasPass ? this.renderConfirmPass() : ''}
+          {(newEmail.touched || newEmail.active) && auth.get('hasPass') ? this.renderConfirmPass() : ''}
       </form>
     );
   }
@@ -71,7 +71,7 @@ const mapDispatchToProps = (dispatch) => {
 const mapStateToProps = ({auth}) => {
   return { 
     initialValues: {
-      newEmail: auth.email,
+      newEmail: auth.get('email'),
     },
     auth,
   };

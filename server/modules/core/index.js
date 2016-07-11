@@ -12,7 +12,7 @@ module.exports = (express, app, mongoose, expressConfig) => {
     maxAge: 31557600000
   })); 
   // WEBPACK DEV SERVER SETTINGS
-  if(!app.get('isProd')){
+  if(!app.get('isProd') && !app.get('isTest')){
     const compiler = webpack(webpackConfig); 
   
     app.use(webpackDevMiddleware(compiler, {

@@ -11,14 +11,7 @@ import thunk from 'redux-thunk';
 
 import rootReducer from 'reducers';
 
-
-function renderComponent(ComponentClass, props, children) {
-  const Component = (() => {
-    if (children) {
-      return () => <ComponentClass {...props}>{children}</ComponentClass>;
-    }
-    return () => <ComponentClass {...props} />;
-  })();
+function renderComponent(ComponentClass, props) {
   const middleware = compose(
     applyMiddleware(reduxPromise),
     applyMiddleware(thunk)
@@ -29,17 +22,17 @@ function renderComponent(ComponentClass, props, children) {
   );
   const componentInstance = renderIntoDocument(
     <Provider store={store} key="provider">
-      <Component />
+      <ComponentClass {...props} />
     </Provider>
   );
-  
+
   chai.use(require('chai-jquery'));
-  
-  $.fn.simulate = function (eventName, value) {
-    if(value) this.val(value);
+
+  $.fn.simulate = function simulate(eventName, value) {
+    if (value) this.val(value);
     Simulate[eventName](this[0]);
   };
-  
+
   return $(ReactDom.findDOMNode(componentInstance));
 }
 

@@ -63,7 +63,7 @@ class UpdatePassForm extends Component {
           <input type="password" className="form-control" {...newPassword2}/>
         </div>
         <div className="btn-toolbar">
-          <button type="submit" className={`btn btn-success ${auth.isUpdating ? 'disabled' : ''}` }> {auth.isUpdating ? 'loading...' : 'Save'} </button>
+          <button type="submit" className={`btn btn-success ${auth.get('isUpdating') ? 'disabled' : ''}` }> {auth.get('isUpdating') ? 'loading...' : 'Save'} </button>
         </div>
       </form>
     );

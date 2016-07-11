@@ -20,6 +20,7 @@ class Settings extends Component {
       <div className="col-md-6 offset-md-3 col-sm-12">
         <div className="m-a-1">
         <h2>User Settings</h2>
+        <StatusHandler errors={this.state.errors} />
         <UpdateEmailForm  
           errorHanlder={this.handleErrors}
         />
@@ -31,7 +32,6 @@ class Settings extends Component {
         <AddPassForm 
           errorHanlder={this.handleErrors}
         />
-        <StatusHandler errors={this.state.errors} />
         </div>
       </div>
     );
